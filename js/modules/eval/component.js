@@ -11,6 +11,9 @@ class EvalComponent extends SuperComponent{
                                 <div class="btn-cont btn-cont--marg-bottom">
                                   ${ this._buttonsTemplate(this._config.modeDeg) }
                                 </div>
+                                <label class="card__feature-name">Operators</label>
+                                <div class="card__btns card__btns--overflow-horizontal">${ this._operatorsTemplate(this._config.operators) }
+                                </div>
                                 <label class="card__feature-name">Build-in f(x)</label>
                                 <div class="card__btns card__btns--overflow-horizontal">${ this._functionTemplate(this._config.inBuildFunction.map(f => { return {name:f,args:['x']}})) }
                                 </div>
@@ -52,6 +55,13 @@ class EvalComponent extends SuperComponent{
   _constantTemplate(variables){
     if(variables.length !== 0){
       return variables.map(({name}) => `<button class="btn btn--color-stand onclick btn--marg-right" data-varid="${ name }">${ name }</button>`).join('')
+    }
+    return this._emptyTemplate()
+  }
+
+  _operatorsTemplate(oper){
+    if(oper.length !== 0){
+      return oper.map(o => `<button class="btn btn--color-stand onclick btn--marg-right" data-operid="${ o }">${ o }</button>`).join('')
     }
     return this._emptyTemplate()
   }

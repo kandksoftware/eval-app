@@ -31,6 +31,8 @@ class EvalController extends App{
             this._addCustomFactor(o.element.dataset.funid)
           }else if(o.element.dataset.varid){
             this._addCustomFactor(o.element.dataset.varid)
+          }else if(o.element.dataset.operid){
+            this._addCustomFactor(o.element.dataset.operid)
           }
         break
         case 'onkeyup':

@@ -21,6 +21,9 @@ class Config extends Observer{
         value:0
       }],
       inBuildFunction:[
+        'cos',
+        'sin',
+        'tan',
         'tanh',
         'sinh',
         'cosh',
@@ -30,9 +33,6 @@ class Config extends Observer{
         'atanh',
         'asinh',
         'acosh',
-        'cos',
-        'sin',
-        'tan',
         'abs',
         'round',
         'ln',
@@ -45,6 +45,7 @@ class Config extends Observer{
         'TRUE',
         'FALSE'
       ],
+      operators:['%','√','∛','^','‰','*','/','×','÷','MOD','**','+','-','AND','OR','XOR'],
       customFunctions:[],
       results:[],
       textarea:'88.3+6*88*tan(8)*(tan(tan(ln(sin(23)))))',
