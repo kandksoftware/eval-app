@@ -95,7 +95,7 @@ class AddController extends App{
   _readFunction(id){
     const f = this._config.customFunctions.find(f => COMPOSE_FUNCTION_ID(f) === id)
     if(typeof f !== 'undefined'){
-      this._UIcomponent.setDataValueTo(ConfigComponent.FUNCTION_TEMPLATE(),customFunctionModel(f))
+      this._UIcomponent.setDataValueTo(AddComponent.FUNCTION_TEMPLATE(),customFunctionModel(f))
     }else{
       new NotificationController()
       .setText('Some error occured!')
