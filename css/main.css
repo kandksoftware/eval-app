@@ -1,0 +1,404 @@
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+@font-face {
+  font-family: proxima_nova;
+  src: url("../resources/fonts/Proxima Nova Alt Light.otf");
+}
+
+body {
+  background-color: #f1f1f1;
+  height: 100vh;
+  line-height: 1;
+  width: 100%;
+  font-family: proxima_nova;
+  /*padding: $space-between-elmts;*/
+}
+
+.hide {
+  display: none;
+}
+
+textarea {
+  resize: none;
+}
+
+.align-right {
+  float: right;
+}
+
+.marg-top {
+  margin-top: 0.5rem;
+}
+
+.btn {
+  border: none;
+  cursor: pointer;
+  padding: 0.2rem 0.5rem;
+  font-size: 1rem;
+  border-radius: 0.3125rem;
+  position: relative;
+}
+
+.btn:hover {
+  opacity: 0.8;
+}
+
+.btn--color-stand {
+  background-color: dodgerBlue;
+  border: 0.0625rem solid dodgerBlue;
+  color: #fff;
+}
+
+.btn--color-warn {
+  background-color: red;
+  border: 0.0625rem solid red;
+  color: #fff;
+}
+
+.btn--color-stand-inv {
+  background-color: #fff;
+  border: 0.0625rem solid dodgerBlue;
+  color: dodgerBlue;
+}
+
+.btn--color-warn-inv {
+  background-color: #fff;
+  border: 0.0625rem solid red;
+  color: red;
+}
+
+.btn--color-trans {
+  background-color: transparent;
+  border: 0.0625rem solid black;
+}
+
+.btn--marg-right {
+  margin-right: 0.3125rem;
+}
+
+.btn > div {
+  position: absolute;
+  color: black;
+  top: 0;
+  right: 0;
+}
+
+.btn-cont--to-left {
+  text-align: left;
+}
+
+.btn-cont--to-right {
+  text-align: right;
+}
+
+.btn-cont--marg-bottom {
+  margin-bottom: 0.5rem;
+}
+
+.no-overflow {
+  overflow: hidden;
+}
+
+.fun {
+  display: inline-block;
+  width: auto;
+  padding: 0.3125rem;
+  border-radius: 0.625rem;
+  border: 0.0625rem solid #cccccc;
+  margin-right: 0.3125rem;
+  white-space: normal;
+  cursor: pointer;
+}
+
+.fun button {
+  padding: 0.3125rem;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.fun button:first-child {
+  font-size: 0.8rem;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 0.3125rem;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.card::after {
+  clear: both;
+}
+
+.card__intro {
+  text-align: justify;
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.card__intro > span {
+  color: green;
+}
+
+.card__tr {
+  padding: 0.3125rem;
+  border-radius: 0.3125rem;
+  height: 100px;
+  width: 100%;
+  resize: none;
+  border: 0.0625rem solid #cccccc;
+  font-size: 1rem;
+  overflow: auto;
+  outline: none;
+  color: #404040;
+  margin: 0.5rem 0;
+}
+
+.card__tr--error {
+  border: 0.0625rem solid red;
+  background-color: rgba(252, 19, 3, 0.2);
+}
+
+.card__feature-name {
+  margin: 0.25rem 0;
+  display: inline-block;
+  color: dodgerBlue;
+}
+
+.card__feature-name::after {
+  content: ':';
+}
+
+.card__btns {
+  padding: 0.3125rem 0;
+}
+
+.card__btns--overflow-horizontal {
+  white-space: pre !important;
+  overflow: auto;
+}
+
+.card__btns--overflow-horizontal::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.card__btns--to-left {
+  text-align: left;
+}
+
+.card__btns--to-right {
+  text-align: right;
+}
+
+.card__label, .card__input {
+  width: 100%;
+  display: block;
+  font-size: 1rem;
+}
+
+.card__title {
+  text-align: center;
+  margin-top: 0.3125rem;
+  font-size: 1.2rem;
+}
+
+.card__label {
+  color: dodgerBlue;
+}
+
+.card__label::after {
+  content: ':';
+}
+
+.card__label, .card__input:not(:last-child) {
+  margin-bottom: 0.3125rem;
+}
+
+.card__input {
+  border-radius: 0.3125rem;
+  padding: 0.3125rem;
+  border: 0.0625rem solid #cccccc;
+  overflow: auto;
+  outline: none;
+}
+
+.tree-highlighter {
+  background-color: #fff;
+  width: 100%;
+  height: 100%;
+  padding: 0.625rem;
+  font-size: 1.25rem;
+  overflow: auto;
+  position: relative;
+  white-space: nowrap;
+}
+
+.tree-highlighter .ev-line {
+  display: block;
+  color: #5E5E5E;
+}
+
+.tree-highlighter .ev-line:not(:first-child) {
+  margin-top: 0.625rem;
+}
+
+.tree-highlighter .next-brackets {
+  color: dodgerBlue;
+}
+
+.tree-highlighter .next {
+  color: green;
+}
+
+.tree-highlighter .result {
+  color: gray;
+  font-style: bold;
+}
+
+.tree-highlighter .function {
+  color: #AE1DAD;
+}
+
+.tree-highlighter .op-n {
+  color: #005493;
+  opacity: 0.3;
+  margin-right: 0.625rem;
+}
+
+.notif {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  position: fixed;
+  left: 0.3125rem;
+  bottom: 0.3125rem;
+  width: calc(100% - 0.875rem);
+  padding: 0.3125rem;
+  border-radius: 0.3125rem;
+}
+
+.notif__message {
+  color: #fff;
+  width: calc(100% - 2.5rem);
+}
+
+.notif__btn {
+  display: inline-block;
+  color: #fff;
+  width: 0.625rem;
+  cursor: pointer;
+  margin-right: 0.3125rem;
+}
+
+.notif--warning {
+  background-color: rgba(255, 0, 0, 0.5) !important;
+  border: 0.125rem solid red !important;
+}
+
+.notif--info {
+  background-color: rgba(255, 255, 0, 0.5) !important;
+  border: 0.125rem solid yellow !important;
+}
+
+.nav {
+  z-index: 4;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: dodgerBlue;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 3.125rem;
+}
+
+.nav--item {
+  -ms-flex-item-align: center;
+      -ms-grid-row-align: center;
+      align-self: center;
+}
+
+.nav__container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+.nav__icon {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.5rem;
+}
+
+.nav__name {
+  font-size: 1.2rem;
+  color: #fff;
+}
+
+.nav__name::after {
+  content: 'Eval';
+  font-weight: 600;
+}
+
+@media screen and (min-width: 768px) {
+  .nav__name::after {
+    content: 'Eval';
+  }
+}
+
+.nav__btns {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+.nav__btns > img {
+  width: 1.2rem;
+  height: 1.2rem;
+  margin-left: 0.5rem;
+}
+
+.entry {
+  position: absolute;
+  top: 3.125rem;
+  left: 0;
+  width: 100%;
+  padding: 0.5rem;
+  overflow: auto;
+}
+/*# sourceMappingURL=main.css.map */

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eval | See all math & logic operation</title>
+    <link rel="stylesheet" href="../dist/css/main.css">
+  </head>
+  <body>
+    <div id="app">
+      <header id="header"></header>
+      <main class="entry" id="entry"></main>
+      <footer class="footer"></footer>
+    </div>
+    <div id="notification"></div>
+  </body>
+  <script>
+    const $ = id => document.getElementById(id)
+  </script>
+  <!-- libraries -->
+  <script src="js/lib/ea.js"></script>
+  <script src="js/lib/observer.js"></script>
+  <!-- settings -->
+  <script src="js/settings/config.js"></script>
+  <!-- system -->
+  <script src="js/system/component.js"></script>
+  <script src="js/system/app.js"></script>
+  <!-- src -->
+  <script src="js/src/functions.js"></script>
+  <script src="js/src/marker.js"></script>
+  <script src="js/src/parser.js"></script>
+  <script src="js/src/validator.js"></script>
+  <script src="js/src/result-collector.js"></script>
+  <script src="js/src/calculator.js"></script>
+  <script src="js/src/model/models.js"></script>
+  <!-- modules -->
+  <!--- parents modules -->
+  <script src="js/modules/super/super-component.js"></script>
+  <!--- eval -->
+  <script src="js/modules/eval/component.js"></script>
+  <script src="js/modules/eval/controller.js"></script>
+  <!--- add -->
+  <script src="js/modules/add/component.js"></script>
+  <script src="js/modules/add/controller.js"></script>
+  <!--- notification -->
+  <script src="js/modules/notification/component.js"></script>
+  <script src="js/modules/notification/controller.js"></script>
+  <!--- menu -->
+  <script src="js/modules/menu/component.js"></script>
+  <script src="js/modules/menu/controller.js"></script>
+  <!--- settings -->
+  <script src="js/modules/settings/component.js"></script>
+  <script src="js/modules/settings/controller.js"></script>
+  <!-- main (init here) -->
+  <script src="js/main.js"></script>
+</html>
