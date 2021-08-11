@@ -1,5 +1,7 @@
 'use strict'
-
+//need to add autocomplate system for the constants & functions
+//check if argument name is same as constant or function
+//check if function body is parceble
 class AddController extends App{
 	constructor(){
     super()
@@ -32,8 +34,55 @@ class AddController extends App{
             this._deleteConstant(o.element.dataset.vardelid)
           }
         break
+        case 'onkeyup':
+          switch(o.element.dataset.id){
+            case 'args':
+              this._checkFunctionArgsOnTheFly(o)
+            break
+            case 'value':
+              this._checkConstValueOnTheFly(o)
+            break
+          }
+        break
       }
     })
+  }
+  //Might be used to test variables and custom funtions
+  _testCustom(v,c){
+    return typeof c.find(cus => cus.name === v) !== 'undefined'
+  }
+
+  _testInput(o,r = true){
+    const className = 'card__tr--error'
+    if(r){
+      o.element.classList.add(className)
+      return
+    }else{
+      o.element.classList.remove(className)
+      return
+    }
+  }
+
+  _checkFunctionArgsOnTheFly(o){
+    const args = this._getFunctionData().args
+    for(let i = 0,l = args.length;i < l;i++){
+      this._testInput(o,false)
+      if(this._config.inBuildFunction.includes(args[i])){
+        this._testInput(o)
+      }else if(this._testCustom(args[i],this._config.variables)){
+        this._testInput(o)
+      }else if(this._testCustom(args[i],this._config.customFunctions)){
+        this._testInput(o)
+      }
+    }
+  }
+
+  _checkConstValueOnTheFly(o){
+    const value = this._getConstData().value
+    this._testInput(o,false)
+    if(isNaN(value)){
+      this._testInput(o)
+    }
   }
 
   _getFunctionData(){
@@ -103,12 +152,17 @@ class AddController extends App{
     }
   }
 
-  _saveConstant(){
+  _getConstData(){
     const inputs = this._UIcomponent.getDataValueFrom(AddComponent.CONSTANT_TEMPLATE())
-    const nc = {
-      name:trim(inputs.name),
+    return{
+      name:trim(inputs.name).toUpperCase(),
       value:inputs.value,
     }
+  }
+
+  _saveConstant(){
+    const nc = this._getConstData()
+    if(nc.name.length === 0) return
 
     if(typeof this._config.inBuildConstants.find(c => c === nc.name) !== 'undefined'){
       new NotificationController()
@@ -118,7 +172,6 @@ class AddController extends App{
     }
 
     const variables = this._config.variables
-    
     if(typeof variables.find(v => v.name === nc.name) !== 'undefined'){//update
       new NotificationController()
       .setText('Constant updated')

@@ -71,53 +71,7 @@ class FakeThread extends Timer{
   }
 }
 
-class RotateFeature extends FakeThread{
-  constructor(){
-    super(40)
-    this.x = 0
-    this.y = 0
-    this.i = 0
-    this.j = 0
-    this.setBlockCallback(lines => {
-      let tokens = lines.split(' ')
-      tokens = tokens.map(token => {
-        console.log(token)
-        if(token.length > 1){
-          const key = token[0] 
-          const value = token.slice(1)
-          switch(key){
-            case 'X':
-              this.x = value
-            break
-            case 'Y':
-              this.y = value
-            break
-            case 'I':
-              this.i = value
-            break
-            case 'J':
-              this.j = value
-            break
-          }
 
-          const r = rotate(this.x,this.y,45)
-          const r2 = rotate(this.i,this.j,45)
-
-          if(key === 'X') return 'X'+ r.x
-          else if(key === 'Y') return 'Y'+ r.y
-          else if(key === 'I') return 'I'+ r2.x
-          else if(key === 'J') return 'J'+ r2.y
-          
-          return token
-        }else{
-          return token
-        }
-      })
-
-      console.log(tokens)
-    })
-  }
-}
 
 
 

@@ -20,7 +20,7 @@ body {
 }
 
 .hide {
-  display: none;
+  display: none !important;
 }
 
 textarea {
@@ -33,71 +33,6 @@ textarea {
 
 .marg-top {
   margin-top: 0.5rem;
-}
-
-.btn {
-  border: none;
-  cursor: pointer;
-  padding: 0.2rem 0.5rem;
-  font-size: 1rem;
-  border-radius: 0.3125rem;
-  position: relative;
-}
-
-.btn:hover {
-  opacity: 0.8;
-}
-
-.btn--color-stand {
-  background-color: dodgerBlue;
-  border: 0.0625rem solid dodgerBlue;
-  color: #fff;
-}
-
-.btn--color-warn {
-  background-color: red;
-  border: 0.0625rem solid red;
-  color: #fff;
-}
-
-.btn--color-stand-inv {
-  background-color: #fff;
-  border: 0.0625rem solid dodgerBlue;
-  color: dodgerBlue;
-}
-
-.btn--color-warn-inv {
-  background-color: #fff;
-  border: 0.0625rem solid red;
-  color: red;
-}
-
-.btn--color-trans {
-  background-color: transparent;
-  border: 0.0625rem solid black;
-}
-
-.btn--marg-right {
-  margin-right: 0.3125rem;
-}
-
-.btn > div {
-  position: absolute;
-  color: black;
-  top: 0;
-  right: 0;
-}
-
-.btn-cont--to-left {
-  text-align: left;
-}
-
-.btn-cont--to-right {
-  text-align: right;
-}
-
-.btn-cont--marg-bottom {
-  margin-bottom: 0.5rem;
 }
 
 .no-overflow {
@@ -126,6 +61,10 @@ textarea {
   font-size: 0.8rem;
 }
 
+.uppercase {
+  text-transform: uppercase;
+}
+
 .card {
   background-color: #fff;
   border-radius: 0.3125rem;
@@ -137,33 +76,26 @@ textarea {
   clear: both;
 }
 
-.card__intro {
-  text-align: justify;
-  margin-bottom: 0.5rem;
-  font-size: 1.2rem;
-}
-
-.card__intro > span {
-  color: green;
-}
-
 .card__tr {
+  height: 12.5rem;
+  resize: none;
+}
+
+.card__tr--error {
+  border: 0.0625rem solid red;
+  background-color: rgba(252, 19, 3, 0.2);
+}
+
+.card--input {
   padding: 0.3125rem;
   border-radius: 0.3125rem;
-  height: 100px;
   width: 100%;
-  resize: none;
   border: 0.0625rem solid #cccccc;
   font-size: 1rem;
   overflow: auto;
   outline: none;
   color: #404040;
   margin: 0.5rem 0;
-}
-
-.card__tr--error {
-  border: 0.0625rem solid red;
-  background-color: rgba(252, 19, 3, 0.2);
 }
 
 .card__feature-name {
@@ -231,6 +163,15 @@ textarea {
   outline: none;
 }
 
+.card__number {
+  font-weight: 800;
+  color: red;
+}
+
+.card__number::after {
+  content: '.';
+}
+
 .tree-highlighter {
   background-color: #fff;
   width: 100%;
@@ -272,6 +213,16 @@ textarea {
   color: #005493;
   opacity: 0.3;
   margin-right: 0.625rem;
+}
+
+.tree-highlighter .loc {
+  padding: 5px;
+  background-color: dodgerblue;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 14px;
+  margin-left: 5px;
+  display: inline-block;
 }
 
 .notif {
@@ -396,6 +347,141 @@ textarea {
   margin-left: 0.5rem;
 }
 
+.noscript {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  width: 100%;
+  height: 100vh;
+  font-size: 2rem;
+  text-align: center;
+  padding: 0.25rem;
+}
+
+.btn {
+  border: none;
+  cursor: pointer;
+  padding: 0.2rem 0.5rem;
+  font-size: 1rem;
+  border-radius: 0.3125rem;
+  position: relative;
+}
+
+.btn:hover {
+  opacity: 0.8;
+}
+
+.btn--color-stand {
+  background-color: dodgerBlue;
+  border: 0.0625rem solid dodgerBlue;
+  color: #fff;
+}
+
+.btn--color-warn {
+  background-color: red;
+  border: 0.0625rem solid red;
+  color: #fff;
+}
+
+.btn--color-stand-inv {
+  background-color: #fff;
+  border: 0.0625rem solid dodgerBlue;
+  color: dodgerBlue;
+}
+
+.btn--color-warn-inv {
+  background-color: #fff;
+  border: 0.0625rem solid red;
+  color: red;
+}
+
+.btn--color-trans {
+  background-color: transparent;
+  border: 0.0625rem solid black;
+}
+
+.btn--marg-right {
+  margin-right: 0.3125rem;
+}
+
+.btn > div {
+  position: absolute;
+  color: black;
+  top: 0;
+  right: 0;
+}
+
+.btn-cont--to-left {
+  text-align: left;
+}
+
+.btn-cont--to-right {
+  text-align: right;
+}
+
+.btn-cont--marg-bottom {
+  margin-bottom: 0.5rem;
+}
+
+.diagram {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  width: 100%;
+}
+
+.diagram__bar {
+  margin: 5px 0;
+  padding: 5px;
+  border-radius: 5px;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.diagram--red {
+  background-color: red;
+}
+
+.diagram--black {
+  background-color: black;
+}
+
+.diagram--green {
+  background-color: green;
+}
+
+.diagram--orange {
+  background-color: orange;
+}
+
+.diagram--80 {
+  width: 80%;
+}
+
+.diagram--90 {
+  width: 90%;
+}
+
+.diagram--3 {
+  width: 3%;
+}
+
+.diagram--40 {
+  width: 40%;
+}
+
 .entry {
   position: absolute;
   top: 3.125rem;
@@ -403,5 +489,54 @@ textarea {
   width: 100%;
   padding: 0.5rem;
   overflow: auto;
+}
+
+.entry__tool-box {
+  height: auto;
+  width: 100%;
+  text-align: right;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  border-bottom: 0.0625rem solid #cccccc;
+  margin-bottom: 0.5rem;
+}
+
+.entry__btns {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.entry__btns > button {
+  margin-left: 0.3125rem;
+  padding: 0.1125rem;
+  background-color: transparent;
+  border: none;
+  color: dodgerBlue;
+  border-radius: 0.3125rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.entry__btns > button:hover {
+  opacity: 0.8;
+}
+
+.entry__btns--warn {
+  color: red !important;
+}
+
+.entry--selected {
+  background-color: rgba(255, 0, 0, 0.3) !important;
 }
 /*# sourceMappingURL=main.css.map */

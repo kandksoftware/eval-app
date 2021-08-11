@@ -36,7 +36,7 @@ class Tokens{
   }
 
   static isNumber(c){
-    return c >= '0' && c <= '9' || c === Tokens.MACRO() || c === '.'
+    return c >= '0' && c <= '9' || c === Tokens.MACRO() /*|| c === '.'*/
   }
 }
 
@@ -61,7 +61,15 @@ class XString{
     return ns
   }
 
-  spacer(str,format = false){
+  static map(s,callback){
+    let ns = ''
+    for(let i = 0,l = s.length;i < l;i++){
+      ns += callback(s[i],s,i)
+    }
+    return ns
+  }
+
+  spacer(str){
     return this.onString(str,(s,i) => {
       const b = s.charAt(i - 1)
       const c = s.charAt(i)
@@ -73,6 +81,7 @@ class XString{
         '+',
         '/',
         '=',
+        '-',
         Tokens.ARGS_SEPERATOR(),
         ,'×','÷','%','√','π','∛','^','‰'
       ].includes(c)) return ' ' + c + ' '
@@ -81,17 +90,19 @@ class XString{
         else if(b !== '*') return ' ' + c
         else if(n !== '*') return c + ' '
       } 
-      //wtf is letter and not?
-      if(Tokens.isLetter(c) && !Tokens.isLetter(c) || (c === Tokens.MACRO() && !format)) return ' ' + c
+      
+      if(Tokens.isLetter(c) && !Tokens.isLetter(c)) return ' ' + c
       else if(Tokens.isLetter(b) && Tokens.isLetter(c)){
         if(Tokens.isNumber(n)){
           return c
         }else{
-          if(!Tokens.isLetter(n)) return c + ' '
+          if(!Tokens.isLetter(n)){
+            return c + ' '
+          } 
           else return c
         }
       } 
-      else if(Tokens.isNumber(c) && !Tokens.isNumber(n)) return c + ' '
+      else if(Tokens.isNumber(c) && !(Tokens.isNumber(n) || n === '.' )) return c + ' '
       else return c
     })
   }
@@ -137,41 +148,35 @@ class StringToArray{
 
 class Error{
   constructor(){
-    this.init()
+    this._init()
   }
 
-  init(){
-    this.is = false
-    this.array = []
-    this.ln = 0
+  _init(){
+    this._array = []
+    this._ln = 0
   }
 
   add(mess){
-    this.is = true
-    this.array.push({
-      ln:this.ln,
+    this._array.push({
+      ln:this._ln,
       mess:mess
     })
   }
 
   get(){
-    return this.array.slice(0)
-  }
-
-  isError(){
-    return this.is
+    return this._array.slice(0)
   }
 
   length(){
-    return this.array.length()
+    return this._array.length()
   }
 
   clear(){
-    this.init()
+    this._init()
   }
   
   setLineNumber(ln){
-    this.ln = ln + 1
+    this._ln = ln + 1
   }
 }
 
@@ -234,13 +239,6 @@ class Validator extends XString{
     return this.lines
   }
 
-  testPerformance(str){
-    const a = performance.now()
-    this.spacer(str)
-    const b = performance.now()
-    console.log('It took ' + (b - a) + ' ms.')
-  }
-
   end(){
     this.jumpTest.execTest().forEach(j => {
       this.error.setLineNumber(j.inLine)
@@ -283,4 +281,15 @@ class Validator extends XString{
     return stopIn
   }
 }
+
+const removeOneLineComments = str => {
+  let read = true
+  return XString.map(str,(ch,s,i) => {
+    if(s[i] === '/' && s[i + 1] === '/') read = false
+    if(s[i] === '\n') read = true
+    return read ? s[i] : ''
+  })
+}
+
+
 

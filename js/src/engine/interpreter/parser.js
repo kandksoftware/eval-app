@@ -1,138 +1,20 @@
 'use strict'
 
-class Limiter{
-  static isNumber(t){
-    return t >= 0 && t <= 9
-  }
-
-  static alert(n){
-    let counter = 0
-    
-    for(let i = 0,length = n.length;i < length;i++){
-      if(Limiter.isNumber(n.charAt(i))) counter++
-      if(counter > 8) return true
-    }
-    return false
-  }
-
-  static exec(n){
-    let counter = 0
-    let ns = ''
-    
-    for(let i = 0,length = n.length;i < length;i++){
-      if(Limiter.isNumber(n.charAt(i))) counter++
-
-      if(counter > 8) return ns
-      ns += n.charAt(i)
-    }
-    return ns
-  }
-}
-
-class Variables{
-  constructor(config){
-    this._variables = []
-    this._config = config
-    this._init()
-  }
-  
-  _init(){
-    this._config.get().variables.forEach(v => this._variables.push(v))
-  }
-
-  replaceVariablesByValue(array){
-    for(let i = 0,l = array.length;i < l;i++){
-      const foundVariable = this._variables.find(v => v.name === array[i])
-      if(typeof foundVariable !== 'undefined'){
-        array[i] = foundVariable.value
-      }
-    }
-    return array
-  }
-}
-
-class BuildInFunctions{
-  constructor(config){
-    this._config = config
-  }
-  
-  static rond(arg){
-    switch(arg){
-      case 0:
-      case 90:
-      case 180:
-      case 270:
-      case 360:
-        return arg - 0.001
-      break
-    }
-    return arg
-  }
-  
-  get(){
-    const selected = this._config.get().modeDeg
-    return [{
-      name:'tanh',
-      body:arg => selected ? Math.tanh(arg * Math.PI / 180) : Math.tanh(arg)
-    },{
-      name:'sinh',
-      body:arg => selected ? Math.sinh(arg * Math.PI / 180) : Math.sinh(arg)
-    },{
-      name:'cosh',
-      body:arg => selected ? Math.cosh(arg * Math.PI / 180) : Math.cosh(arg)
-    },{
-      name:'atan',
-      body:arg => selected ? Math.atan(arg) * 180 / Math.PI : Math.atan(arg)
-    },{
-      name:'asin',
-      body:arg => selected ? Math.asin(arg) * 180 / Math.PI : Math.asin(arg)
-    },{
-      name:'acos',
-      body:arg => selected ? Math.acos(arg) * 180 / Math.PI : Math.acos(arg)
-    },{
-      name:'atanh',
-      body:arg => selected ? Math.atanh(arg * Math.PI / 180) : Math.atanh(arg)
-    },{
-      name:'asinh',
-      body:arg => selected ? Math.asinh(arg * Math.PI / 180) : Math.asinh(arg)
-    },{
-      name:'acosh',
-      body:arg => selected ? Math.acosh(arg * Math.PI / 180) : Math.acosh(arg)
-    },{
-      name:'cos',
-      body:arg => selected ? Math.cos(arg * Math.PI / 180) : Math.cos(arg)
-    },{
-      name:'sin',
-      body:arg => selected ? Math.sin(arg * Math.PI / 180) : Math.sin(arg)
-    },{
-      name:'tan',
-      body:arg => selected ? Math.tan(arg * Math.PI / 180) : Math.tan(arg)
-    },{
-      name:'abs',
-      body:arg => Math.abs(arg)
-    },{
-      name:'round',
-      body:arg => Math.round(arg)
-    },{
-      name:'ln',
-      body:arg => Math.log(arg)
-    },{
-      name:'log',
-      body:arg => Math.log10(arg)
-    },{
-      name:'exp',
-      body:arg => Math.exp(arg)
-    }]
-  }
-}
-
 class Parser{
-  constructor(functions,functions2,variables,error,marker = null){
+  constructor(variables,error,marker = null){
     this._error = error
     this._variables = variables
-    this._functions = functions
-    this._functions2 = functions2
+    this._functions = []
+    this._customFunctions = []
     this._marker = marker
+  }
+
+  setBuildInFunctions(functions){
+    this._functions = functions
+  }
+
+  setCustomFunctions(customFunctions){
+    this._customFunctions = customFunctions
   }
 
   _aexec(array){
@@ -247,7 +129,7 @@ class Parser{
   }
 
   _isFunction(array,loc){
-    const funs = this._functions.concat(this._functions2)
+    const funs = this._functions.concat(this._customFunctions)
     for(let f of funs){
       if(array[loc - 1] === f.name) return loc - 1
     }
@@ -321,7 +203,7 @@ class Parser{
           } 
         }
       }else{//exec custom functions
-        for(let sf of this._functions2){
+        for(let sf of this._customFunctions){
           this.show_marker = false//marker feature
           
           if(sf.name === array[fun]){

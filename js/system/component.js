@@ -86,4 +86,8 @@ class Component extends Observer{
       e.value = data[e.dataset.id]
     })
   }
+
+  template(str){
+    return stringCleaner(str)
+  }
 }

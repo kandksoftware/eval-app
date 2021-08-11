@@ -26,7 +26,7 @@ class AddComponent extends SuperComponent{
               <label class="card__label">Name</label>
               <input class="card__input set get" type="text" data-id="name" value="salary"/>
               <label class="card__label">Arguments</label>
-              <input class="card__input set get" type="text" data-id="args" value="daily days"/>
+              <input class="card__input set get onkeyup" type="text" data-id="args" value="daily days"/>
               <label class="card__label">Function body</label>
               <input class="card__input set get" type="text" data-id="body" value="daily * days"/>
               <div class="card__btns card__btns--to-right">
@@ -42,9 +42,9 @@ class AddComponent extends SuperComponent{
     return `<div class="card card--entry" id="${ AddComponent.CONSTANT_TEMPLATE() }">
               <h1 class="card__title">Add Constant</h1>
               <label class="card__label">Name</label>
-              <input class="card__input set get" type="text" data-id="name" value="PI"/>
+              <input class="card__input set get uppercase" type="text" data-id="name" value="PI"/>
               <label class="card__label">Value</label>
-              <input class="card__input set get" type="text" data-id="value" value="3.14"/>
+              <input class="card__input set get onkeyup" type="text" data-id="value" value="3.14"/>
               <div class="card__btns card__btns--to-right">
                 <button data-id="cancel" class="btn btn--color-stand onclick">Back</button>
                 <button data-id="save-constant" class="btn btn--color-stand onclick">Save</button>

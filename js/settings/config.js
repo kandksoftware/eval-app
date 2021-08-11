@@ -9,10 +9,10 @@ class Config extends Observer{
       modeDeg:true,//id true = deg, false = rad
       variables:[{
         name:'PI',
-        value:Math.PI
+        value:3.141592653589793
       },{
         name:'E',
-        value:Math.E
+        value:2.71828
       },{
         name:'TRUE',
         value:1
@@ -48,7 +48,17 @@ class Config extends Observer{
       operators:['%','√','∛','^','‰','*','/','×','÷','MOD','**','+','-','AND','OR','XOR'],
       customFunctions:[],
       results:[],
-      textarea:'88.3+6*88*tan(8)*(tan(tan(ln(sin(23)))))',
+      textarea:{
+        default:'print 88.3+6*88*tan(8)*(tan(tan(ln(sin(23)))))',
+        caret:0,
+      },
+      showLabel:true,
+      showEval:true,
+      backup:{
+        array:[],
+        cursor:0
+      },
+      scope:''
     }
 
     if(localStorage.getItem(this._KEY) === 'null' || localStorage.getItem(this._KEY) === null) localStorage.setItem(this._KEY,JSON.stringify(this._setttings))
