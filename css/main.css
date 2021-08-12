@@ -234,12 +234,13 @@ textarea {
       -ms-flex-direction: column;
           flex-direction: column;
   position: fixed;
-  left: 0.3125rem;
-  bottom: 0.3125rem;
+  left: 0.5rem;
+  bottom: 0.5rem;
   width: calc(100% - 0.875rem);
   padding: 0.5rem;
   border-radius: 0.5rem;
   background-color: #fff;
+  z-index: 3;
 }
 
 .notif__title, .notif__message {
@@ -277,6 +278,16 @@ textarea {
   -webkit-box-pack: end;
       -ms-flex-pack: end;
           justify-content: flex-end;
+}
+
+.overlay {
+  position: fixed;
+  z-index: 2;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
 }
 
 .nav {

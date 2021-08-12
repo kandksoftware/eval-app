@@ -37,7 +37,8 @@ class NotificationComponent extends Component{
                                 <div class="notif__btns">
                                   <div class="btn btn--color-stand onclick" data-id="close">Close</div>
                                 </div>
-                              </div>`
+                              </div>
+                              <div class="overlay"></div>`
   }
 
   _renderColor(){
