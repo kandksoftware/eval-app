@@ -229,47 +229,54 @@ textarea {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
+  -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-  -webkit-box-align: start;
-      -ms-flex-align: start;
-          align-items: flex-start;
+      -ms-flex-direction: column;
+          flex-direction: column;
   position: fixed;
   left: 0.3125rem;
   bottom: 0.3125rem;
   width: calc(100% - 0.875rem);
-  padding: 0.3125rem;
-  border-radius: 0.3125rem;
-  font-size: 1.2rem;
-  height: 4rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  background-color: #fff;
+}
+
+.notif__title, .notif__message {
+  color: #000;
+}
+
+.notif__title {
+  margin-bottom: 0.5rem;
+}
+
+.notif__title::after {
+  content: ':';
+}
+
+.notif__title--warning {
+  color: red !important;
+}
+
+.notif__title--info {
+  color: orange !important;
 }
 
 .notif__message {
-  color: #fff;
-  width: calc(100% - 2.5rem);
+  color: #000;
 }
 
-.notif__btn {
-  display: inline-block;
-  color: #fff;
-  width: 0.625rem;
-  cursor: pointer;
-  margin-right: 0.3125rem;
-}
-
-.notif--warning {
-  background-color: rgba(255, 0, 0, 0.3) !important;
-  border: 0.125rem solid red !important;
-}
-
-.notif--info {
-  background-color: rgba(255, 255, 0, 0.3) !important;
-  border: 0.125rem solid yellow !important;
+.notif__btns {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
 }
 
 .nav {
@@ -371,7 +378,7 @@ textarea {
   font-size: 1rem;
   border-radius: 0.3125rem;
   position: relative;
-  height: 1.875rem;
+  max-height: 1.875rem;
 }
 
 .btn:hover {
