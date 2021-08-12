@@ -371,6 +371,7 @@ textarea {
   font-size: 1rem;
   border-radius: 0.3125rem;
   position: relative;
+  height: 1.875rem;
 }
 
 .btn:hover {
@@ -438,6 +439,7 @@ textarea {
       -ms-flex-direction: column;
           flex-direction: column;
   width: 100%;
+  margin-top: 10px;
 }
 
 .diagram__bar {

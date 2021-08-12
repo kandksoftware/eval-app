@@ -48,8 +48,8 @@ class EvalComponent extends SuperComponent{
                 <div class="entry__tool-box">
                   <div class="card__number">${ number + 1}</div>
                   <div class="entry__btns">
-                    <button class="onclick" data-selectid="${ number }">&#10003;</button>
-                    <button class="onclick entry__btns--warn" data-deleteid="${ number }">-</button>
+                    <button class="onclick" data-selectid="${ number }">Select</button>
+                    <button class="onclick entry__btns--warn" data-deleteid="${ number }">Delete</button>
                   </div>
                 </div>
                 ${ result.tree.filter(t => this._evalFilter(t)).map((o,i) => `<span class="ev-line"><span class="op-n">${ i + 1 }</span>${ makeSpace(i) + o.mess + `<span class="loc ${ !this._config.showLabel ? 'hide' : ''}">` + o.loc + `</span>`}</span>`).join('') }

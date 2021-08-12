@@ -26,4 +26,8 @@ class GraphicsComponent extends SuperComponent{
               </div>
             </div>`
   }
+
+  _renderDiagram(){
+    //_config.variables
+  }
 }
