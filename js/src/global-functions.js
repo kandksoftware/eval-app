@@ -63,52 +63,6 @@ const COMPOSE_FUNCTION_ID = fun => {
   return fun.name + `(${ fun.args.join(',') })`
 }
 
-class PairNestedTest{
-  constructor(targets = []){
-    this._targets = targets
-  }
-  _findDeppest(str,target){
-    let lloc = -1
-    for(let i = 0,l = str.length;i < l;i++){
-      if(str[i] === target) lloc = i
-    }
-    return lloc
-  }
-  
-  _findFrom(str,target,from){
-    for(let i = from,l = str.length;i < l;i++){
-      if(str[i] === target) return i
-    }
-    return -1
-  }
-  //if returns string with any brackets it means they are not nested correctly
-  _areProperelyNested(str){
-    const OPEN = '('
-    const CLOSE = ')'
-    const lo = this._findDeppest(str,this._targets[0])
-    if(lo === -1) return str
-    else{
-      const ff = this._findFrom(str,this._targets[1],lo + 1)
-      if(ff === -1) return str
-      const s = str.slice(0,lo)
-      const e = str.slice(ff + 1)
-      str = s + e
-      return this._areProperelyNested(s + e)
-    }
-  }
-
-  _isContainesTargets(str){
-    for(let i = 0,l = str.length;i < l;i++){
-      if(str[i] === this._targets[0] || str[i] === this._targets[1]) return false
-    }
-    return true
-  }
-
-  exec(str){
-    return this._isContainesTargets(this._areProperelyNested(str))
-  }
-}
-
 const clearTags = str => {
   let read = true
   let ns = ''
@@ -124,6 +78,19 @@ const clearTags = str => {
   }
   return ns
 }
+
+const median = array => {
+  array.sort((a,b) => a - b)
+  const div = array.length % 2 
+  if(div === 0){
+    const half = array.length / 2 - 1
+    return (array[half] + array[half + 1]) / 2
+  }else{
+    return array[parseInt(array.length / 2)]
+  }
+}
+
+
 
 
 

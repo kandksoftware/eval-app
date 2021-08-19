@@ -5,17 +5,53 @@ class Variables{
     this._variables = []
     this._config = config
     this._error = error
-    this._scope = null
-    this._type = Variables.NORMAL()
+    this._scope = new Path()
     this._init()
   }
 
-  static NORMAL(){
-    return 'global'
+  static NULL(){
+    return 0
   }
 
-  static SEPARATOR(){
-    return '.'
+  static NUMBER(){
+    return 1
+  }
+
+  static STRING(){
+    return 2
+  }
+
+  static OBJECT(){
+    return 3
+  }
+
+  static HIDDEN(){
+    return 4
+  }
+
+  static typeof(str){
+    if(!isNaN(str)) return Variables.NUMBER()
+    else if(str[0] === '@') return Variables.HIDDEN()
+    else if(str[0] === '\'' && str[str.length - 1] === '\'' || typeof str === 'string' && str !== 'null') return Variables.STRING()
+    else if(str === 'null') return Variables.NULL()
+  }
+
+  static convertToJSString(str){
+    if(str[0] === '\'' && str[str.length - 1] === '\'') return str.slice(1,str.length - 1)
+    else return str
+  }
+
+  static retractVariable(str){
+    for(let i = str.length;i >= 0;i--){
+      if(str.charAt(i) === Path.SEPARATOR()) return str.slice(i + 1)
+    }
+    return str
+  }
+
+  _match(e,v){
+    const path = Path.getDirectory(v.name)
+    if(path.length === 0) return e.name === v.name && e.scope === this.getScope()
+    else return e.name === Variables.retractVariable(v.name) && e.scope === path
   }
   
   _init(){
@@ -36,13 +72,23 @@ class Variables{
     return array
   }
 
+  replaceVariableByValue(name){
+    for(let i = 0,l = this._variables.length;i < l;i++){
+      if(this._match(this._variables[i],{name})){
+        if(this._variables[i].type === Variables.STRING()) return this._variables[i].value.slice(1,this._variables[i].value.length - 1)
+        else return this._variables[i].value
+      }
+    }
+    return name
+  }
+
   _containesVariable(variable){
-    return typeof this._variables.find(v => v.name === variable.name) !== 'undefined'
+    return typeof this._variables.find(v => this._match(v,variable)) !== 'undefined'
   }
 
   _updateVariableValue(variable){
     this._variables.forEach((v,i,arr) => {
-      if(arr[i].name === variable.name){
+      if(this._match(arr[i],variable)){
         arr[i] = variable
       }
     })
@@ -53,22 +99,23 @@ class Variables{
   }
 
   add(variable){
-    if(this._scope === null){
-      variable.name = this._getVariableFromScope(variable.name)
-    } 
-    else variable.name = this._scope + Variables.SEPARATOR() + variable.name
-
-    variable.type = this._type
-    
     if(this._isReadOnly(variable)){
       this._error.add('Read only variable!')
       return 
     }
+    variable.scope = this.getScope()
     if(this._containesVariable(variable)){//update a variable value
       this._updateVariableValue(variable)
     }else{//create a new variable
       this._variables.push(variable)
     }
+  }
+
+  getVariableByName(name){
+    for(let i = 0,l = this._variables.length;i < l;i++){
+      if(this._match(this._variables[i],{name:name})) return this._variables[i]
+    }
+    return null
   }
 
   getValueByName(name){
@@ -77,39 +124,32 @@ class Variables{
     }
     return null
   }
-
-  _getScope(str){
-    for(let i = str.length;i >= 0;i--){
-      if(str.charAt(i) === Variables.SEPARATOR()) return str.slice(0,i)
-    }
-    return str
-  }
-
-  _getVariableFromScope(str){
-    for(let i = str.length;i >= 0;i--){
-      if(str.charAt(i) === Variables.SEPARATOR()) return str.slice(i + 1)
-    }
-    return str
-  }
   
-  getByScope(scope){
-    return this._variables.filter(v => this._getScope(v.name) === scope)
-  }
-
   get(){
     return this._variables.slice(0)
   }
 
-  addScope(scope){
-    this._scope = scope
-  }
-
-  setType(type){
-    this._type = type
+  setScope(name){
+    this._scope.add(name)
   }
 
   removeScope(){
-    this._scope = null
+    this._scope.removePath()
+  }
+
+  getScope(){
+    return this._scope.getAbsolutePath()
+  }
+
+  getByScope(scope,system = true){
+    if(!system) return this._variables.filter(v => v.scope === scope && Variables.typeof(v.name) !== Variables.HIDDEN())
+    else return this._variables.filter(v => v.scope === scope)
+  }
+
+  static getVariableValueFromArray(array,name,defaultValue){
+    const f = array.find(v => v.name === name)
+    if(typeof f === 'undefined') return defaultValue
+    return f.value
   }
 }
 

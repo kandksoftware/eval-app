@@ -13,9 +13,11 @@ class Var{
         parser.setBuildInFunctions(functions.get())
         parser.setCustomFunctions(config.customFunctions)
         //asign or create
+        const value = parser.exec(rightSide)
         variables.add({
           name:leftSide[0],
-          value:parser.exec(variables.replaceVariablesByValue(rightSide)),
+          value:value,
+          type:Variables.typeof(value)
         })
       }
     }

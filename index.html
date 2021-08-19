@@ -14,11 +14,13 @@
       <footer class="footer"></footer>
     </div>
     <div id="notification"></div>
+    <div id="diagram"></div>
   </body>
   <script>
     const $ = id => document.getElementById(id)
   </script>
   <!-- libraries -->
+  <script src="js/lib/math-array.js"></script>
   <script src="js/lib/ea.js"></script>
   <script src="js/lib/observer.js"></script>
   <!-- settings -->
@@ -29,8 +31,10 @@
   <!-- src -->
   <script src="js/src/global-functions.js"></script>
   <script src="js/src/caret.js"></script>
+  <script src="js/src/autocomplete.js"></script>
   <!-- src / interpreter start -->
   <script src="js/src/engine/marker.js"></script>
+  <script src="js/src/engine/interpreter/path.js"></script>
   <script src="js/src/engine/interpreter/validator.js"></script>
   <script src="js/src/engine/interpreter/limiter.js"></script>
   <script src="js/src/engine/interpreter/variables.js"></script>
@@ -69,9 +73,9 @@
   <!--- file -->
   <script src="js/modules/file/component.js"></script>
   <script src="js/modules/file/controller.js"></script>
-  <!--- graphics -->
-  <script src="js/modules/graphics/component.js"></script>
-  <script src="js/modules/graphics/controller.js"></script>
+  <!--- autocomplete -->
+  <script src="js/modules/autocomplete/component.js"></script>
+  <script src="js/modules/autocomplete/controller.js"></script>
   <!-- main (init here) -->
   <script src="js/main.js"></script>
 </html>

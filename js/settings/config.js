@@ -6,48 +6,14 @@ class Config extends Observer{
     this._KEY = 'eval1.0.0'
     this._data = {}
     this._setttings = {
+      init:true,
       modeDeg:true,//id true = deg, false = rad
-      variables:[{
-        name:'PI',
-        value:3.141592653589793
-      },{
-        name:'E',
-        value:2.71828
-      },{
-        name:'TRUE',
-        value:1
-      },{
-        name:'FALSE',
-        value:0
-      }],
-      inBuildFunction:[
-        'cos',
-        'sin',
-        'tan',
-        'tanh',
-        'sinh',
-        'cosh',
-        'atan',
-        'asin',
-        'acos',
-        'atanh',
-        'asinh',
-        'acosh',
-        'abs',
-        'round',
-        'ln',
-        'log',
-        'exp',
-      ],
-      inBuildConstants:[
-        'PI',
-        'E',
-        'TRUE',
-        'FALSE'
-      ],
+      variables:[],
+      inBuildFunction:[],
+      inBuildConstants:[],
       operators:['%','√','∛','^','‰','*','/','×','÷','MOD','**','+','-','AND','OR','XOR'],
       customFunctions:[],
-      results:[],
+      queue:[],//view queue
       textarea:{
         default:'print 88.3+6*88*tan(8)*(tan(tan(ln(sin(23)))))',
         caret:0,
@@ -58,7 +24,9 @@ class Config extends Observer{
         array:[],
         cursor:0
       },
-      scope:''
+      scope:'',
+      libs:[],//extensions such as:diagram, object
+      autocomplete:[]
     }
 
     if(localStorage.getItem(this._KEY) === 'null' || localStorage.getItem(this._KEY) === null) localStorage.setItem(this._KEY,JSON.stringify(this._setttings))

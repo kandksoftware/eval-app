@@ -12,7 +12,7 @@ class Print{
         const parser = new Parser(variables,error,marker)
         parser.setBuildInFunctions(functions.get())
         parser.setCustomFunctions(config.customFunctions)
-        marker.addFinalResult(parser.exec(variables.replaceVariablesByValue(rightSide,marker)))
+        marker.addFinalResult(parser.exec(rightSide))
       }
     }
   }

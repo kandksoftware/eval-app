@@ -37,12 +37,11 @@ class Parser{
     if(typeof array[0] === 'undefined'){
       this._error.add(typeof array[0])
       return 'error'
-    }else if(array[0] === 'Infinity' || array[0] === '-Infinity'){
+    }else if(array[0] === Infinity || array[0] === -Infinity){
       this._error.add(array[0])
       return 'error'
     }else if(isNaN(array[0])){
-      this._error.add(array[0])
-      return 'error'
+      return this._variables.replaceVariableByValue(array[0])
     }else{
       return +array[0]
     } 
@@ -84,30 +83,56 @@ class Parser{
     return r
   }
 
-  _calculate(operator,paramA,paramB){
-    let result = ''
-    let a = paramA !== 'null' ? parseFloat(paramA) : 0
-    let b = paramB !== 'null' ? parseFloat(paramB) : 0
-
-    result = (paramA === '-') ? -b :
-            (paramA === '+') ? +b :
-            (paramA === '*' || paramA === '/' || paramA === '×' || paramA === '÷') ? b :
-            (operator === '%') ? a / 100 :
-            (operator ==='‰') ? a / 1000 :
-            (operator === '√') ? Math.sqrt(b) :
-            (operator === '∛') ? Math.cbrt(b) :
-            (operator === '^') ? this._exponentiation(a,b) :
-            (operator === '*' || operator === '×') ? a * b :
-            (operator === '/' || operator === '÷') ? a / b :
-            (operator === 'MOD') ? a % b :
-            (operator === '+') ? a + b :
-            (operator === '-') ? a - b :
-            (operator === '**') ? Math.pow(a,b) :
-            this._parseLogic(operator,a,b)
-
-    if(this._marker !== null){
-      result = Limiter.exec(result + '')
+  _getType(factor){
+    if(!isNaN()){
+      return parseFloat(factor)
+    }else{
+      const variable = this._variables.getVariableByName(factor)
+      if(variable){
+        return variable.type
+      }else{
+        return Variables.typeof(factor)
+      }
     }
+  }
+  
+  _prepareValue(f){
+    let a = this._variables.getVariableByName(f)
+    if(a === null){
+      a = {
+        value:f,
+        type:Variables.typeof(f)
+      }
+    }
+    if(a.type === Variables.STRING()) a.value = Variables.convertToJSString(a.value)
+    else if(a.type === Variables.NULL()) a.value = 0
+    return a
+  }
+
+  _calculate(operator,paramA,paramB){
+    return this._eval(operator,this._prepareValue(paramA),this._prepareValue(paramB))
+  }
+
+  _eval(operator,paramA,paramB){
+    let result = ''
+    let a = paramA.type === Variables.NUMBER() ? parseFloat(paramA.value) : paramA.value
+    let b = paramB.type === Variables.NUMBER() ? parseFloat(paramB.value) : paramB.value
+
+    if(paramA.value === '-') result = -b
+    else if(paramA.value === '+') result = +b
+    else if(paramA.value === '*' || paramA.value === '/' || paramA.value === '×' || paramA.value === '÷') result = b
+    else if(operator === '%') result = a / 100
+    else if(operator ==='‰') result = a / 1000
+    else if(operator === '√') result = Math.sqrt(b)
+    else if(operator === '∛') result = Math.cbrt(b)
+    else if(operator === '^') result = this._exponentiation(a,b)
+    else if(operator === '*' || operator === '×') result = a * b
+    else if(operator === '/' || operator === '÷') result = a / b
+    else if(operator === 'MOD') result = a % b
+    else if(operator === '+') result = a + b
+    else if(operator === '-') result = a - b
+    else if(operator === '**') result = Math.pow(a,b)
+    else result = this._parseLogic(operator,a,b)
     return result
   }
 
@@ -145,7 +170,8 @@ class Parser{
 
   _execCustomFunction(myFunction,args,callbackError){
     if(args.length !== myFunction.args.length) return
-    const array = this._variables.replaceVariablesByValue(myFunction.body.slice(0))
+    //const array = this._variables.replaceVariablesByValue(myFunction.body.slice(0))
+    const array = myFunction.body.slice(0)
     for(let i = 0,length = array.length;i < length;i++){
       for(let j = 0,length2 = args.length;j < length2;j++){
         if(array[i] === myFunction.args[j]) array[i] = args[j]
@@ -167,7 +193,6 @@ class Parser{
     const first = this._getBracketDeepestLocation(array)
     const fun = this._isFunction(array,first)
     const close = this._getCloseBracketFrom(array,first + 1)
-
     let output = []
     let calc = ''
     
@@ -197,7 +222,7 @@ class Parser{
             
             a = sf.body(calc)
             if(this._marker !== null){
-              a = Limiter.exec(a + '')
+              //a = Limiter.exec(a + '')
               this._marker.addResult([a])
             }
           } 
@@ -211,7 +236,7 @@ class Parser{
             if(sf.args.length === args.length){
               a = this._execCustomFunction(sf,args)
             }
-          } 
+          }
         }
       }
       

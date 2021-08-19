@@ -1,10 +1,5 @@
 'use strict'
-//show/hide labes - done
-//comments - done
-//save programs - done
 //filter by var, print or formula
-//save carret location - done
-//backup <= | => - done
 //landing page
 //fake thread
 //diagram
@@ -13,7 +8,8 @@
 class EvalController extends App{
 	constructor(){
     super()
-    this._backup = new Backup(50,this._cg)
+    this._backup = new Backup(this._cg)
+    this._autocomplete = new Autocomplete(this._config)
     this._UIcomponent = new EvalComponent()
     this._UIcomponent.refresh()
     this._UIcomponent.attach(Component.VIEW_ID(),o => {
@@ -39,9 +35,9 @@ class EvalController extends App{
             case 'config':
               new AddController()
             break
-            case 'formula_entry':
+            case EvalComponent.TEXTAREA_ID():
               this._updateCaretLocation(o)
-              this._addCustomFactor(name = '')
+              //this._addCustomFactor(name = '')
             break
             case 'eval':
               this._switchEval()
@@ -55,17 +51,12 @@ class EvalController extends App{
             case 'file':
               new FileController()
             break
+            case 'templates':
+              
+            break
           }
 
-          if(o.element.dataset.funid){
-            this._addCustomFactor(o.element.dataset.funid)
-          }else if(o.element.dataset.varid){
-            this._addCustomFactor(o.element.dataset.varid)
-          }else if(o.element.dataset.operid){
-            this._addCustomFactor(o.element.dataset.operid)
-          }else if(o.element.dataset.useid){
-            this._pipe(o.element.dataset.useid)
-          }else if(o.element.dataset.deleteid){
+          if(o.element.dataset.deleteid){
             this._deleteCard(o.element.dataset.deleteid)
           }else if(o.element.dataset.selectid){
             this._selectCard(o.element.dataset.selectid)
@@ -73,16 +64,25 @@ class EvalController extends App{
         break
         case 'onkeyup':
           switch(o.element.dataset.id){
-            case 'formula_entry':
+            case EvalComponent.TEXTAREA_ID():
               this._backup.add(o.element.value)//add to the backup
               this._testAndUpdateEntry(o)
               this._updateCaretLocation(o)
+              this._updateTextarea(o.element.value,false)
+
+              this._filterForAutocomplete(this._autocomplete.exec(
+                CARET.getInputSelection(o.element).start,
+                o.element.value
+              ))
+            break
+            case 'a-c':
+              this._filterForAutocomplete(o.element.value)
             break
           }
         break
         case 'onpaste':
           switch(o.element.dataset.id){
-            case 'formula_entry':
+            case EvalComponent.TEXTAREA_ID():
               this._backup.add(o.element.value)//add to the backup
             break
           }
@@ -92,18 +92,39 @@ class EvalController extends App{
     })
   }
 
+  _filterForAutocomplete(str){
+    let array = this._config.inBuildFunction.map(f => { return {name:f,args:['x']}})
+    array = array.concat(this._config.customFunctions)
+    array = array.map(a => COMPOSE_FUNCTION_ID(a))
+    array = array.concat(this._config.variables.map(v => v.name))
+    array = array.concat(['print','show','use','object','diagram','@title','@maxValue'])
+    array = array.concat(this._config.operators)
+    array = this._autocomplete.getFiltered(array,str)
+    new AutocompleteController(array,this._backup,str)
+  }
+
   _testAndUpdateEntry(o){
+    const tests = [
+      new PairNestedTest(['(',')']),
+      new QuotesTest('\'')
+    ]
     const CLASS_NAME = 'card__tr--error'
-    if(new PairNestedTest(['(',')']).exec(o.element.value)){
-      o.element.classList.remove(CLASS_NAME)
-    }else{
-      o.element.classList.add(CLASS_NAME)
+
+    for(let i = 0,l = tests.length;i < l;i++){
+      if(tests[i].exec(o.element.value)){
+        o.element.classList.remove(CLASS_NAME)
+      }else{
+        o.element.classList.add(CLASS_NAME)
+        return
+      }
     }
-    this._updateTextarea(o.element.value,false)
   }
 
   _exec(){
     const ro = this._UIcomponent.getDataValueFrom(Component.VIEW_ID())
+    if(!new PairNestedTest(['(',')']).exec(ro.formula_entry)) return
+    if(!new QuotesTest('\'').exec(ro.formula_entry)) return
+    
     const runner = new Runner()
     runner.exec(ro.formula_entry,
     e => {
@@ -117,18 +138,19 @@ class EvalController extends App{
     if(e.length === 0){
       const marker = runner.getMarker()
       if(marker.length !== 0){//if empty, don't add it
-        this._config.results.push({
-          tree:runner.getMarker(),
+        this._config.queue.push({
+          type:0,
+          tree:marker,
           selected:false,
         })
       }
     }else{
-      this._config.results.push({
+      this._config.queue.push({
+        type:0,
         tree:new Marker().addError('Some error has occured!').get(),
         selected:true,
       })
     }
-
     this._cg.save()
   }
 
@@ -138,7 +160,7 @@ class EvalController extends App{
   }
 
   _clearHistory(){
-    this._config.results = []
+    this._config.queue = []
     this._cg.save()
     new NotificationController()
     .setText('The history has been deleted')
@@ -163,25 +185,13 @@ class EvalController extends App{
     .show(NotificationComponent.INFO())
   }
 
-  _addCustomFactor(name){
-    const ro = this._UIcomponent.getDataValueFrom(Component.VIEW_ID())
-    const left = ro.formula_entry.slice(0,this._config.textarea.caret)
-    const right = ro.formula_entry.slice(this._config.textarea.caret)
-    const str = left + name + right
-    this._UIcomponent.setDataValueTo(Component.VIEW_ID(),{
-      formula_entry:str
-    })
-    const ms = left + name
-    this._config.textarea.default = str
-  }
-
   _deleteCard(id){
-    this._config.results = this._config.results.filter((r,i) => i !== +id)
+    this._config.queue = this._config.queue.filter((r,i) => i !== +id)
     this._cg.save()
   }
 
   _selectCard(id){
-    this._config.results.forEach((r,i,arr) => {
+    this._config.queue.forEach((r,i,arr) => {
       if(i === +id){
         arr[i].selected =! arr[i].selected
         return arr[i]

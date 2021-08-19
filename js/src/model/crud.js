@@ -1,6 +1,6 @@
 'use strict'
 
-class CRUD {
+/*class CRUD {
   constructor(){
     this._array = []
   }
@@ -27,4 +27,4 @@ class CRUD {
   get(){
     return this._array.slice(0)
   }
-}
+}*/

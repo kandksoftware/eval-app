@@ -3,7 +3,7 @@
 class FileController extends App{
 	constructor(){
     super()
-    this._backup = new Backup(50,this._cg)
+    this._backup = new Backup(this._cg)
     this._UIcomponent = new FileComponent()
     this._UIcomponent.refresh()
     this._UIcomponent.attach(Component.VIEW_ID(),o => {
@@ -39,7 +39,7 @@ class FileController extends App{
     const ro = this._UIcomponent.getDataValueFrom(FileComponent.EXPORT_TEMPLATE())
     save(() => ({
       data:ro.formula_entry,
-      fileName:ro.file_name
+      fileName:ro.file_name + '.txt'
     }))
   }
 }

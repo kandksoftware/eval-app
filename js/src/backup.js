@@ -1,12 +1,16 @@
 'use string'
 
 class Backup{
-  constructor(limit,cg){
+  constructor(cg,limit = Backup.STANDARD_LIMIT()){
     this._limit = limit
     this._cg = cg
     this._config = this._cg.get()
     this._array = this._config.backup.array
     this._cursor = this._config.backup.cursor
+  }
+
+  static STANDARD_LIMIT(){
+    return 50
   }
 
   add(str){

@@ -90,4 +90,12 @@ class Component extends Observer{
   template(str){
     return stringCleaner(str)
   }
+
+  show(){
+    this._viewId.classList.remove('hide')
+  }
+
+  hide(){
+    this._viewId.classList.add('hide')
+  }
 }

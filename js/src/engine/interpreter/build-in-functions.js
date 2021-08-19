@@ -1,8 +1,9 @@
 'use strict'
 
 class BuildInFunctions{
-  constructor(config){
+  constructor(config = null,variables = null){
     this._config = config
+    this._variables = variables
   }
   
   static rond(arg){
@@ -17,9 +18,13 @@ class BuildInFunctions{
     }
     return arg
   }
+
+  getValuesFromObject(arg){
+    return this._variables !== null ? this._variables.getByScope(arg,false).map(v => +v.value) : []
+  }
   
   get(){
-    const selected = this._config.get().modeDeg
+    const selected = this._config !== null ? this._config.get().modeDeg : true
     return [{
       name:'tanh',
       body:arg => selected ? Math.tanh(arg * Math.PI / 180) : Math.tanh(arg)
@@ -71,6 +76,30 @@ class BuildInFunctions{
     },{
       name:'exp',
       body:arg => Math.exp(arg)
+    },{
+      name:'avg',
+      body:arg => {
+        const values = this.getValuesFromObject(arg)
+        return values.length === 0 ? null : MArray.avg(values)
+      }
+    },{
+      name:'max',
+      body:arg => {
+        const values = this.getValuesFromObject(arg)
+        return values.length === 0 ? null : MArray.max(values)
+      }
+    },{
+      name:'min',
+      body:arg => {
+        const values = this.getValuesFromObject(arg)
+        return values.length === 0 ? null : MArray.min(values)
+      }
+    },{
+      name:'median',
+      body:arg => {
+        const values = this.getValuesFromObject(arg)
+        return values.length === 0 ? null : MArray.median(values)
+      }
     }]
   }
 }

@@ -163,6 +163,8 @@ class AddController extends App{
   _saveConstant(){
     const nc = this._getConstData()
     if(nc.name.length === 0) return
+    nc.type = Variables.NUMBER()
+    nc.scope = ''
 
     if(typeof this._config.inBuildConstants.find(c => c === nc.name) !== 'undefined'){
       new NotificationController()

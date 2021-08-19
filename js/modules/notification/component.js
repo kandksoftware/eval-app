@@ -20,18 +20,10 @@ class NotificationComponent extends Component{
     return 1
   }
 
-  /*render(){
-    this._viewId.innerHTML = `<div class="notif ${ this._renderColor() } group" id="${ NotificationComponent.VIEW_ID() }">
-                                <h3 class="notif__title">Warning</h3>
-                                <div class="notif__message">${ this._text }</div>
-                                <div class="notif__btn onclick" data-id="close">&#10005;</div>
-                              </div>`
-  }*/
-
   render(){
     this._viewId.innerHTML = `<div class="notif group" id="${ NotificationComponent.VIEW_ID() }">
                                 <div class="notif__content">
-                                  <h3 class="notif__title ${ this._renderColor() }">Warning</h3>
+                                  <h3 class="notif__title ${ this._renderColor() }">Message</h3>
                                   <div class="notif__message">${ this._text }</div>
                                 </div>
                                 <div class="notif__btns">
@@ -48,14 +40,6 @@ class NotificationComponent extends Component{
       case NotificationComponent.INFO():
         return 'notif__title--info'
     }
-  }
-
-  show(){
-    this._viewId.classList.remove('hide')
-  }
-
-  hide(){
-    this._viewId.classList.add('hide')
   }
 
   setText(text){

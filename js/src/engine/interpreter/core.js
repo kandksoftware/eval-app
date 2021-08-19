@@ -9,8 +9,8 @@ class Interpreter{
     this._config = new Config()
     this._error = new Error()
     this._marker = new Marker()
-    this._functions = new BuildInFunctions(this._config)
     this._variables = new Variables(this._config,this._error)
+    this._functions = new BuildInFunctions(this._config,this._variables)
   }
 
   clear(){
@@ -53,17 +53,18 @@ class Runner{
     const flow = removeOneLineComments(str)
     const lines = flow.split('\n')
     for(let i = 0,l = lines.length;i < l;i++){
-      const tokens = this._xs.removeWhiteSpace(this._xs.spacer(lines[i])).trim().split(' ')
+      const rt = new RecursiveTokenizer()
+      rt.exec(lines[i])
+      const tokens = rt.get()
+      
       this._interpreter.exec(tokens,i)
       if(this._interpreter.getErrorMess().length !== 0){
         this._interpreter.getErrorMess().forEach(e => callbackError(e))
         break
       }
     }
-    //console.log(this._interpreter.getVariables().getByScope('diagram'))
-    //console.log(this._interpreter.getVariableValueByName('february'))
-    //console.log(this._interpreter.getVariables().get())
-    //console.log(this._interpreter._marker.get())
+
+    //this.getVariables().get().forEach(v => console.log(v))
   }
 
   getVariables(){
