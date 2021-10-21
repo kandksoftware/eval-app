@@ -1,54 +1,57 @@
 'use strict'
 
 class FakeThread extends Timer{
-  constructor(cycleLength = 20){
+  constructor(_atOnce = 20){
     super()
-    this.cg = new Config()
-    this.config = this.cg.get()
+    this._cg = new Config()
+    this._config = this._cg.get()
     this.setInterval(0)
-    this.cycleLength = cycleLength
+    this._atOnce = _atOnce
     this.reset()
     this.init()
   }
 
   reset(){
-    this.lines = []
-    this.counter = 0
-    this.blockCallback = null
-    this.isRunnigCallback = null
-    this.isDoneCallback = null
-    this.isRun = false
+    this._lines = []
+    this._counter = 0
+    this._blockCallback = null
+    this._isRunnigCallback = null
+    this._isDoneCallback = null
+    this._isRun = false
   }
 
   init(){
+    this._initGlobal()
     this.addCallback(t => {
-      if(this.counter >= this.lines.length){
+      if(this._counter >= this._lines.length){
         t.stop()
-        this.isRun = false
-        if(this.isDoneCallback !== null) this.isDoneCallback()
+        this._isRun = false
+        if(this._isDoneCallback !== null) this._isDoneCallback(this)
       }else{
-        if(this.isRunnigCallback !== null){
+        if(this._isRunnigCallback !== null){
           //to run only once use isRun before update a state
-          if(!this.isRun) this.isRunnigCallback()
+          if(!this.isRun) this._isRunnigCallback(this)
         }
-        this.isRun = true
-        this.counter = this.loop(this.lines,this.counter)
+        this._isRun = true
+        this._counter = this._loop(this._lines)
         t.exec()
       }
     })
   }
 
+  _initGlobal(){}
+
   setLines(lines){
-    this.lines = lines
+    this._lines = lines
   }
 
-  loop(lines,startLine){
+  _loop(lines,startLine){
     let i = startLine
-    let stopIn = startLine + this.cycleLength
+    let stopIn = startLine + this._atOnce
     if(stopIn > lines.length) stopIn = lines.length
     
     for(;i < stopIn;i++){
-      if(this.blockCallback !== null) this.blockCallback(lines[i],i,lines)
+      if(this._blockCallback !== null) this._blockCallback(lines[i],i,lines)
     }
     return stopIn
   }
@@ -59,17 +62,21 @@ class FakeThread extends Timer{
   }
 
   setBlockCallback(blockCallback){
-    this.blockCallback = blockCallback
+    this._blockCallback = blockCallback
   }
 
   onRunningCallback(isRunnigCallback){
-    this.isRunnigCallback = isRunnigCallback
+    this._isRunnigCallback = isRunnigCallback
   }
 
   onDoneCallback(isDoneCallback){
-    this.isDoneCallback = isDoneCallback
+    this._isDoneCallback = isDoneCallback
   }
 }
+
+
+
+
 
 
 

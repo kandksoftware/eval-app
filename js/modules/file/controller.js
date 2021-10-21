@@ -8,16 +8,16 @@ class FileController extends App{
     this._UIcomponent.refresh()
     this._UIcomponent.attach(Component.VIEW_ID(),o => {
       switch(o.event.name){
-        case 'onclick':
+        case Component.ONCLICK():
           if(typeof o.element.dataset.id !== 'undefined'){
             switch(o.element.dataset.id){
-              case 'import':
+              case FileComponent.IMPORT_BUTTON():
                 this._import()
               break
-              case 'export':
+              case FileComponent.EXPORT_BUTTON():
                 this._export()
               break
-              case 'back':
+              case Component.RETURN_BUTTON():
                 new EvalController()
               break
             }

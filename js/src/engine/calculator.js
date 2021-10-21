@@ -3,14 +3,15 @@
 class Calculator{
   constructor(fullMode = true){
     this._fullMode = fullMode//in the full mode, replace variables to their values
-    this._config = new Config()
+    this._cg = new Config()
+    this._config = this._cg.get()
     this._error = new Error()
     this._marker = new Marker()
     this._variables = new Variables(this._config)
-    this._functions = new BuildInFunctions(this._config)
+    this._functions = new BuildInFunctions(this._cg)//?
     this._parser = new Parser(
       this._functions.get(),
-      this._config.get().customFunctions,
+      this._config.customFunctions,
       this._variables,
       this._error,
       this._marker

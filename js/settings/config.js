@@ -19,7 +19,7 @@ class Config extends Observer{
         caret:0,
       },
       showLabel:true,
-      showEval:true,
+      showEval:false,
       backup:{
         array:[],
         cursor:0

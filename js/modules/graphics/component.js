@@ -12,7 +12,7 @@ class GraphicsComponent extends SuperComponent{
   }
 
   render(){
-    this._viewId.innerHTML = `<div class="group" id="${ Component.VIEW_ID() }">
+    this._viewId.innerHTML = `<div class="${ Component.GROUP() }" id="${ Component.VIEW_ID() }">
                                 ${ this._diagramTemplate() }
                               </div>`
   }
@@ -24,7 +24,7 @@ class GraphicsComponent extends SuperComponent{
                 ${ this._renderDiagram() }
               </div>
               <div class="card__btns card__btns--to-right">
-                <button data-id="close" class="btn btn--color-stand onclick">Close</button>
+                <button data-id="close" class="btn btn--color-stand ${ Component.ONCLICK() }">Close</button>
               </div>
             </div>
             <div class="overlay"></div>`

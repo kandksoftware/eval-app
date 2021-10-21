@@ -38,10 +38,10 @@ class Use{
       initVars:[{
         name:'@maxValue',
         value:100
-      }/*,{
+      },{
         name:'@title',
         value:'Diagram'
-      }*/]
+      }]
     },{
       name:'object',
       initVars:[]

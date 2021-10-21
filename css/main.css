@@ -82,7 +82,7 @@ textarea {
 }
 
 .card__tr--error {
-  border: 0.0625rem solid red;
+  border: 0.0625rem solid red !important;
   background-color: rgba(252, 19, 3, 0.2);
 }
 
@@ -101,7 +101,7 @@ textarea {
 .card__feature-name {
   margin: 0.25rem 0;
   display: inline-block;
-  color: dodgerBlue;
+  color: #1e90ff;
 }
 
 .card__feature-name::after {
@@ -144,7 +144,7 @@ textarea {
 }
 
 .card__label {
-  color: dodgerBlue;
+  color: #1e90ff;
 }
 
 .card__label::after {
@@ -305,7 +305,7 @@ textarea {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  background-color: dodgerBlue;
+  background-color: #1e90ff;
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
@@ -404,8 +404,8 @@ textarea {
 }
 
 .btn--color-stand {
-  background-color: dodgerBlue;
-  border: 0.0625rem solid dodgerBlue;
+  background-color: #1e90ff;
+  border: 0.0625rem solid #1e90ff;
   color: #fff;
 }
 
@@ -417,14 +417,20 @@ textarea {
 
 .btn--color-stand-inv {
   background-color: #fff;
-  border: 0.0625rem solid dodgerBlue;
-  color: dodgerBlue;
+  border: 0.0625rem solid #1e90ff;
+  color: #1e90ff;
 }
 
 .btn--color-warn-inv {
   background-color: #fff;
   border: 0.0625rem solid red;
   color: red;
+}
+
+.btn--color-sel-inv {
+  background-color: #fff;
+  border: 0.0625rem solid purple;
+  color: purple;
 }
 
 .btn--color-trans {
@@ -554,6 +560,39 @@ textarea {
   color: red !important;
 }
 
+#splash-screen {
+  position: absolute;
+  z-index: 100;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  height: 100vh;
+  width: 100%;
+  font-size: 2rem;
+  text-align: center;
+  padding: 1rem;
+  color: #1e90ff;
+  background-color: #fff;
+}
+
+#splash-screen::before {
+  content: 'Eval';
+}
+
+#splash-screen > img {
+  margin-top: 1rem;
+}
+
 .entry {
   position: absolute;
   top: 3.125rem;
@@ -603,7 +642,7 @@ textarea {
   padding: 0.1125rem;
   background-color: transparent;
   border: none;
-  color: dodgerBlue;
+  color: #1e90ff;
   border-radius: 0.3125rem;
   font-size: 0.9rem;
   cursor: pointer;

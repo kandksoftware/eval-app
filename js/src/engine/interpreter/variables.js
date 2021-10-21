@@ -55,7 +55,7 @@ class Variables{
   }
   
   _init(){
-    this._config.get().variables.forEach(v => this._variables.push(v))
+    this._config.variables.forEach(v => this._variables.push(v))
   }
 
   replaceVariablesByValue(array,marker = null){
@@ -95,7 +95,7 @@ class Variables{
   }
 
   _isReadOnly(variable){
-    return typeof this._config.get().inBuildConstants.find(name => name === variable.name) !== 'undefined'
+    return typeof this._config.inBuildConstants.find(name => name === variable.name) !== 'undefined'
   }
 
   add(variable){

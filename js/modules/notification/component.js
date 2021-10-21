@@ -20,14 +20,18 @@ class NotificationComponent extends Component{
     return 1
   }
 
+  static CLOSE_BUTTON(){
+    return 'ncb'
+  }
+
   render(){
-    this._viewId.innerHTML = `<div class="notif group" id="${ NotificationComponent.VIEW_ID() }">
+    this._viewId.innerHTML = `<div class="notif ${ Component.GROUP() }" id="${ NotificationComponent.VIEW_ID() }">
                                 <div class="notif__content">
                                   <h3 class="notif__title ${ this._renderColor() }">Message</h3>
                                   <div class="notif__message">${ this._text }</div>
                                 </div>
                                 <div class="notif__btns">
-                                  <div class="btn btn--color-stand onclick" data-id="close">Close</div>
+                                  <div class="btn btn--color-stand ${ Component.ONCLICK() }" data-id="${ NotificationComponent.CLOSE_BUTTON() }">Close</div>
                                 </div>
                               </div>
                               <div class="overlay"></div>`

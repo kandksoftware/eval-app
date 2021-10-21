@@ -10,7 +10,7 @@ class AutocompleteController extends App{
     this._UIcomponent.refresh()
     this._UIcomponent.attach(AutocompleteComponent.VIEW_ID(),o => {
       switch(o.event.name){
-        case 'onclick':
+        case Component.ONCLICK():
           if(o.element.dataset.fid){
             this._addCustomFactor(o.element.dataset.fid)
           }

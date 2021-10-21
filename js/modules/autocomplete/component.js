@@ -12,7 +12,7 @@ class AutocompleteComponent extends EvalComponent{
   }
 
   render(){
-    this._viewId.innerHTML = `<div class="group" id="${ AutocompleteComponent.VIEW_ID() }">
+    this._viewId.innerHTML = `<div class="${ Component.GROUP() }" id="${ AutocompleteComponent.VIEW_ID() }">
                                 ${ this._addFunctionTemplate() }
                               </div>`
   }
@@ -24,7 +24,7 @@ class AutocompleteComponent extends EvalComponent{
 
   _filteredTemplate(filtered){
     if(filtered.length !== 0){
-      return filtered.map(cf => `<button class="btn btn--color-stand onclick btn--marg-right" data-fid="${ cf }">${ cf }</button>`).join('')
+      return filtered.map(cf => `<button class="btn btn--color-stand btn--marg-right ${ Component.ONCLICK() }" data-fid="${ cf }">${ cf }</button>`).join('')
     }
     return `<span class="a-f__no-found">No found!</span>`
   }

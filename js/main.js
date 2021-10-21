@@ -1,9 +1,9 @@
 //ready-to-use program templates
-(function(){
+function main(){
   'use strict'
   const cg = new Config()
   const config = cg.get()
-
+  
   if(config.init){
     let consts = [{
       name:'PI',
@@ -18,8 +18,8 @@
       name:'FALSE',
       value:0,
     }]
-    //init build-in constants
-    config.variables = consts.map(c => {
+    
+    config.variables = consts.map(c => {//init build-in constants
       return {
         name:c.name,
         value:c.value,
@@ -31,6 +31,8 @@
     config.inBuildConstants = consts.map(c => c.name)
     //init build-in functions
     config.inBuildFunction = new BuildInFunctions().get().map(f => f.name)
+    //init autocomplete
+    initAutocomplete(config)
     //save init
     config.init = false
     cg.save()
@@ -39,8 +41,8 @@
   new MenuController()
   new EvalController()
 
-})();
-
+  $('splash-screen').classList.add('hide')//hide a splash screen after full initiation
+}
 
 
 

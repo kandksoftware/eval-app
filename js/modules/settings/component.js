@@ -5,8 +5,24 @@ class SettingsComponent extends SuperComponent{
     super()
   }
 
+  static DAF_BUTTON(){
+    return 'daf'
+  }
+
+  static DAC_BUTTON(){
+    return 'dac'
+  }
+
+  static DELETE_HISTORY_BUTTON(){
+    return 'dHB'
+  }
+
+  static DELETE_ALL_SETTING_BUTTON(){
+    return 'dasb'
+  }
+
   render(){
-    this._viewId.innerHTML = `<div class="group" id="${ Component.VIEW_ID() }">
+    this._viewId.innerHTML = `<div class="${ Component.GROUP() }" id="${ Component.VIEW_ID() }">
                                 ${ this._functionTemplate() }
                                 ${ this._constantTemplate() }
                                 ${ this._historyTemplate() }
@@ -19,7 +35,7 @@ class SettingsComponent extends SuperComponent{
     return `<div class="card card--entry">
               <h1 class="card__title">Delete all functions</h1>
               <div class="card__btns card__btns--to-right">
-                <button data-id="delete-all-functions" class="btn btn--color-warn onclick">Delete</button>
+                <button data-id="${ SettingsComponent.DAF_BUTTON() }" class="btn btn--color-warn ${ Component.ONCLICK() }">Delete</button>
               </div>
             </div>`
   }
@@ -28,7 +44,7 @@ class SettingsComponent extends SuperComponent{
     return `<div class="card card--entry">
               <h1 class="card__title">Delete all constants</h1>
               <div class="card__btns card__btns--to-right">
-                <button data-id="delete-all-constants" class="btn btn--color-warn onclick">Delete</button>
+                <button data-id="${ SettingsComponent.DAC_BUTTON() }" class="btn btn--color-warn ${ Component.ONCLICK() }">Delete</button>
               </div>
             </div>`
   }
@@ -37,7 +53,7 @@ class SettingsComponent extends SuperComponent{
     return `<div class="card card--entry">
               <h1 class="card__title">Delete history</h1>
               <div class="card__btns card__btns--to-right">
-                <button data-id="delete-history" class="btn btn--color-warn onclick">Delete</button>
+                <button data-id="${ SettingsComponent.DELETE_HISTORY_BUTTON() }" class="btn btn--color-warn ${ Component.ONCLICK() }">Delete</button>
               </div>
             </div>`
   }
@@ -46,7 +62,7 @@ class SettingsComponent extends SuperComponent{
     return `<div class="card card--entry">
               <h1 class="card__title">Delete all settings</h1>
               <div class="card__btns card__btns--to-right">
-                <button data-id="delete-all-settings" class="btn btn--color-warn onclick">Delete</button>
+                <button data-id="${ SettingsComponent.DELETE_ALL_SETTING_BUTTON() }" class="btn btn--color-warn ${ Component.ONCLICK() }">Delete</button>
               </div>
             </div>`
   }
@@ -54,7 +70,7 @@ class SettingsComponent extends SuperComponent{
   _backTemplate(){
     return `<div class="card card--entry">
               <div class="card__btns card__btns--to-left">
-                <button data-id="back" class="btn btn--color-stand onclick">Back</button>
+                <button data-id="${ Component.RETURN_BUTTON() }" class="btn btn--color-stand ${ Component.ONCLICK() }">Back</button>
               </div>
             </div>`
   }

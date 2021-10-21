@@ -6,9 +6,9 @@ class NotificationController extends App{
     this._UIcomponent = new NotificationComponent()
     this._UIcomponent.attach(NotificationComponent.VIEW_ID(),o => {
       switch(o.event.name){
-        case 'onclick':
+        case Component.ONCLICK():
           switch(o.element.dataset.id){
-            case 'close':
+            case NotificationComponent.CLOSE_BUTTON():
               this.hide()
             break
           }

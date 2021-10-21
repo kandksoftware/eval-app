@@ -24,7 +24,7 @@ class BuildInFunctions{
   }
   
   get(){
-    const selected = this._config !== null ? this._config.get().modeDeg : true
+    const selected = this._config !== null ? this._config.modeDeg : true
     return [{
       name:'tanh',
       body:arg => selected ? Math.tanh(arg * Math.PI / 180) : Math.tanh(arg)

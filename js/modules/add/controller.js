@@ -5,21 +5,22 @@
 class AddController extends App{
 	constructor(){
     super()
+    this._functions = this._config.customFunctions
+    
     this._UIcomponent = new AddComponent()
     this._UIcomponent.refresh()
-    this._functions = this._config.customFunctions
     this._UIcomponent.attach(Component.VIEW_ID(),o => {
       switch(o.event.name){
-        case 'onclick':
+        case Component.ONCLICK():
           if(typeof o.element.dataset.id !== 'undefined'){
             switch(o.element.dataset.id){
-              case 'save-function':
+              case AddComponent.SAVE_FUNCTION_BUTTON():
                 this._saveFunction()
               break
-              case 'save-constant':
+              case AddComponent.SAVE_CONSTANT_BUTTON():
                 this._saveConstant()
               break
-              case 'cancel':
+              case Component.RETURN_BUTTON():
                 new EvalController()
                 new NotificationController().hide()
               break
@@ -34,12 +35,15 @@ class AddController extends App{
             this._deleteConstant(o.element.dataset.vardelid)
           }
         break
-        case 'onkeyup':
+        case Component.ONKEYUP():
           switch(o.element.dataset.id){
-            case 'args':
+            case AddComponent.ARGS_INPUT():
               this._checkFunctionArgsOnTheFly(o)
             break
-            case 'value':
+            case AddComponent.FUNCTION_BODY_INPUT():
+              this._checkFunctionBodyOnTheFly(o)
+            break
+            case AddComponent.VALUE_INPUT():
               this._checkConstValueOnTheFly(o)
             break
           }
@@ -64,7 +68,8 @@ class AddController extends App{
   }
 
   _checkFunctionArgsOnTheFly(o){
-    const args = this._getFunctionData().args
+    const fd = this._getFunctionData()
+    const args = fd.args
     for(let i = 0,l = args.length;i < l;i++){
       this._testInput(o,false)
       if(this._config.inBuildFunction.includes(args[i])){
@@ -73,7 +78,17 @@ class AddController extends App{
         this._testInput(o)
       }else if(this._testCustom(args[i],this._config.customFunctions)){
         this._testInput(o)
+      }else if(args.includes(fd.name)){//the argument name must be different from the function name
+        this._testInput(o)
       }
+    }
+  }
+
+  _checkFunctionBodyOnTheFly(o){
+    const fd = this._getFunctionData()
+    this._testInput(o,false)
+    if(fd.body.includes(fd.name)){
+      this._testInput(o)
     }
   }
 
@@ -91,7 +106,7 @@ class AddController extends App{
     return {
       name:trim(inputs.name),
       args:inputs.args.split(' ').map(a => trim(a)),
-      body:calc.prepare(inputs.body)
+      body:calc.prepare(inputs[AddComponent.FUNCTION_BODY_INPUT()])
     }
   }
 
@@ -121,7 +136,8 @@ class AddController extends App{
       .show(NotificationComponent.INFO())
       functions.push(nf)
     }
-    
+    //update autocomplete
+    this._updateAutocomplete()
     this._cg.save()
   }
 
@@ -134,6 +150,8 @@ class AddController extends App{
     }
 
     this._config.customFunctions = this._config.customFunctions.filter(v => COMPOSE_FUNCTION_ID(v) !== id)
+    //update autocomplete
+    this._updateAutocomplete()
     this._cg.save()
 
     new NotificationController()
@@ -189,6 +207,8 @@ class AddController extends App{
       .show(NotificationComponent.INFO())
       variables.push(nc)
     }
+    //update autocomplete
+    this._updateAutocomplete()
     
     this._cg.save()
   }
@@ -216,9 +236,15 @@ class AddController extends App{
     }
 
     this._config.variables = this._config.variables.filter(c => c.name !== name)
+    //update autocomplete
+    this._updateAutocomplete()
     this._cg.save()
     new NotificationController()
     .setText('The constant has been deleted')
     .show(NotificationComponent.INFO())
+  }
+
+  _updateAutocomplete(){
+    initAutocomplete(this._config)
   }
 }

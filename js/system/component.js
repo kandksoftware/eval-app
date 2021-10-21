@@ -7,13 +7,49 @@ class Component extends Observer{
     this._config = this._cg.get()
     this._viewId = $('app')
   }
+
+  static GROUP(){
+    return 'group'
+  }
   
   static VIEW_ID(){
     return 'component'
   }
 
+  static ONCLICK(){
+    return 'onclick'
+  }
+
+  static ONKEYUP(){
+    return 'onkeyup'
+  }
+
+  static ONCHANGE(){
+    return 'onchange'
+  }
+
+  static ONPASTE(){
+    return 'onpaste'
+  }
+
+  static ONINPUT(){
+    return 'oninput'
+  }
+
+  static ONMOUSEOVER(){
+    return 'onmouseover'
+  }
+
+  static GET(){
+    return 'get'
+  }
+
+  static SET(){
+    return 'set'
+  }
+
 	_dynamicGrouplistener(o){
-    const group = [...this._viewId.getElementsByClassName('group')]
+    const group = [...this._viewId.getElementsByClassName(Component.GROUP())]
     group.forEach(g => {
       const elements = [...g.getElementsByClassName(o.name)]
       elements.forEach(element => {
@@ -30,22 +66,22 @@ class Component extends Observer{
 
   _addListeners(){
     [{
-      name:'onclick',
+      name:Component.ONCLICK(),
       event:'click'
     },{
-      name:'onmauseover',
+      name:Component.ONMOUSEOVER(),
       event:'mouseover'
     },{
-      name:'onkeyup',
+      name:Component.ONKEYUP(),
       event:'keyup'
     },{
-      name:'onchange',
+      name:Component.ONCHANGE(),
       event:'change'
     },{
-      name:'onpaste',
+      name:Component.ONPASTE(),
       event:'paste'
     },{
-      name:'oninput',
+      name:Component.ONINPUT(),
       event:'input'
     }].forEach(l => this._dynamicGrouplistener(l))
   }
@@ -64,15 +100,15 @@ class Component extends Observer{
   }
 
   getInputs(callback){
-    const inputs = this._viewId.getElementsByClassName('get')
-    for(let i = 0,l = inputs.length;i < l;i++){
-      callback(inputs[i],i,inputs)
+    const elem = this._viewId.getElementsByClassName(Component.GET())
+    for(let i = 0,l = elem.length;i < l;i++){
+      callback(inputs[i],i,elem)
     }
   }
 
   getDataValueFrom(id){
     const o = {}
-    const elem = [...$(id).getElementsByClassName('get')]
+    const elem = [...$(id).getElementsByClassName(Component.GET())]
     elem.forEach(e => {
       if(e.value.length === 0) o[e.dataset.id] = e.value
       else o[e.dataset.id] = isNaN(e.value) ? e.value : +e.value
@@ -81,7 +117,7 @@ class Component extends Observer{
   }
 
   setDataValueTo(id,data){
-    const elem = [...$(id).getElementsByClassName('set')]
+    const elem = [...$(id).getElementsByClassName(Component.SET())]
     elem.forEach(e => {
       e.value = data[e.dataset.id]
     })
@@ -97,5 +133,21 @@ class Component extends Observer{
 
   hide(){
     this._viewId.classList.add('hide')
+  }
+
+  static EXEC_BUTTON(){
+    return '0'
+  }
+
+  static SAVE_BUTTON(){
+    return '1'
+  }
+
+  static RETURN_BUTTON(){
+    return '2'
+  }
+
+  static DELETE_BUTTON(){
+    return '3'
   }
 }

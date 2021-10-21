@@ -9,27 +9,58 @@ class EvalComponent extends SuperComponent{
     return 'formula_entry'
   }
 
+  static CLEAR_BUTTON(){
+    return 'clear'
+  }
+
+  static MODE_BUTTON(){
+    return 'mode'
+  }
+
+  static ADD_BUTTON(){
+    return 'add'
+  }
+
+  static BACKWARD_BUTTON(){
+    return 'history-backward'
+  }
+
+  static FORWARD_BUTTON(){
+    return 'history-forward'
+  }
+
+  static FILE_BUTTON(){
+    return 'file'
+  }
+
+  static CLEAR_HISTORY_BUTTON(){
+    return 'chb'
+  }
+
+  static LABEL_BUTTON(){
+    return 'label'
+  }
+
+  static EVAL_BUTTON(){
+    return 'eval'
+  }
+
   render(){
-    this._viewId.innerHTML = `<div class="group" id="${ Component.VIEW_ID() }">
-                                ${ this._config.queue.map((o,i) => this._queueTemplate(o,i)).join('') }
+    this._viewId.innerHTML = `<div class="${ Component.GROUP() }" id="${ Component.VIEW_ID() }">
+                                ${ new ResultManager(this._config.queue).get().map((o,i) => this._queueTemplate(o,i)).join('') }
                                 <div class="card card--entry">
-                                  <div class="card__btns card__btns--overflow-horizontal">${ clearTags(this._buttonsTemplate(this._config)) }
+                                  <div class="card__btns card__btns--overflow-horizontal">${ clearTags(this._featureButtonsTemplate(this._config)) }
                                   </div>
-                                  <input class="card__input get onkeyup" type="text" data-id="a-c" placeHolder="Insert function name here"/>
+                                  <input class="card__input ${ Component.GET() } ${ Component.ONKEYUP() }" type="text" data-id="a-c" placeHolder="Insert function name here"/>
                                   <div id="a-f" class="a-f">
                                     <div class="a-f__start">${ this._emptyTemplate() }</div>
                                   </div>
-                                  <textarea autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="card__tr card--input get set onkeyup onpaste onclick" data-id="${ EvalComponent.TEXTAREA_ID() }" id="${ EvalComponent.TEXTAREA_ID() }" placeHolder="Insert your formula here...">${ this._config.textarea.default }</textarea>
-                                  <div class="btn-cont btn-cont--to-right">
-                                    <button class="btn btn--color-stand onclick" data-id="backward">&#8592;</button>
-                                    <button class="btn btn--color-stand onclick" data-id="forward">&#8594;</button>
-                                    <button class="btn btn--color-stand onclick" data-id="exec">Calculate</button>
-                                    <button class="btn btn--color-warn onclick" data-id="clear">Clear</button>
-                                  </div>
+                                  <textarea autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="card__tr card--input ${ Component.GET() } ${ Component.SET() } ${ Component.ONKEYUP() } ${ Component.ONPASTE() } ${ Component.ONCLICK() }" data-id="${ EvalComponent.TEXTAREA_ID() }" id="${ EvalComponent.TEXTAREA_ID() }" placeHolder="Insert your formula here...">${ this._config.textarea.default }</textarea>
+                                  ${ this._codeButtonsTemplate() }
                                 </div>
                               </div>`
   }
-
+  //returns logic
   _evalFilter(t){
     if(this._config.showEval) return t.type !== 'final'
     else return t.type === 'final'
@@ -41,8 +72,8 @@ class EvalComponent extends SuperComponent{
                 <div class="entry__tool-box">
                   <div class="card__number">${ number + 1}</div>
                   <div class="entry__btns">
-                    <button class="onclick" data-selectid="${ number }">Select</button>
-                    <button class="onclick entry__btns--warn" data-deleteid="${ number }">Delete</button>
+                    <button class="${ Component.ONCLICK() }" data-selectid="${ number }">Select</button>
+                    <button class="${ Component.ONCLICK() } entry__btns--warn" data-deleteid="${ number }">Delete</button>
                   </div>
                 </div>
                 <div class="entry__seperator"></div>
@@ -80,14 +111,23 @@ class EvalComponent extends SuperComponent{
     }
   }
 
-  _buttonsTemplate(config){
-    return `<button class="btn btn--color-stand-inv onclick btn--marg-right" data-id="mode">${ config.modeDeg ? 'Deg' : 'Rad'}</button>
-            <button class="btn btn--color-stand-inv onclick btn--marg-right" data-id="config">Add</button>
-            <button class="btn ${ config.showLabel ? 'btn--color-warn-inv' : 'btn--color-stand-inv'} onclick btn--marg-right" data-id="label">Label</button>
-            <button class="btn ${ config.showEval ? 'btn--color-warn-inv' : 'btn--color-stand-inv'} onclick btn--marg-right" data-id="eval">Eval</button>
-            <button class="btn btn--color-stand-inv onclick btn--marg-right" data-id="file">File</button>
-            <button class="btn btn--color-stand-inv onclick btn--marg-right" data-id="templates">Templates</button>
-            <button class="btn btn--color-warn-inv onclick btn--marg-right" data-id="c-h">Clear history</button>`
+  _featureButtonsTemplate(config){
+    return `<button class="btn btn--color-stand-inv btn--marg-right ${ Component.ONCLICK() }" data-id="${ EvalComponent.MODE_BUTTON() }">${ config.modeDeg ? 'Deg' : 'Rad'}</button>
+            <button class="btn btn--color-stand-inv btn--marg-right ${ Component.ONCLICK() }" data-id="${ EvalComponent.ADD_BUTTON() }">Add</button>
+            <button class="btn ${ config.showLabel ? 'btn--color-sel-inv' : 'btn--color-stand-inv'} btn--marg-right ${ Component.ONCLICK() }" data-id="${ EvalComponent.LABEL_BUTTON() }">Label</button>
+            <button class="btn ${ config.showEval ? 'btn--color-sel-inv' : 'btn--color-stand-inv'} btn--marg-right ${ Component.ONCLICK() }" data-id="${ EvalComponent.EVAL_BUTTON() }">Eval</button>
+            <button class="btn btn--color-stand-inv btn--marg-right ${ Component.ONCLICK() }" data-id="${ EvalComponent.FILE_BUTTON() }">File</button>
+            <button class="btn btn--color-stand-inv btn--marg-right ${ Component.ONCLICK() }" data-id="templates">Templates</button>
+            <button class="btn btn--color-warn-inv btn--marg-right ${ Component.ONCLICK() }" data-id="${ EvalComponent.CLEAR_HISTORY_BUTTON() }">Clear@display</button>`
+  }
+
+  _codeButtonsTemplate(){
+    return ` <div class="btn-cont btn-cont--to-right">
+              <button class="btn btn--color-stand ${ Component.ONCLICK() }" data-id="${ EvalComponent.BACKWARD_BUTTON() }">&#8592;</button>
+              <button class="btn btn--color-stand ${ Component.ONCLICK() }" data-id="${ EvalComponent.FORWARD_BUTTON() }">&#8594;</button>
+              <button class="btn btn--color-stand ${ Component.ONCLICK() }" data-id="${ Component.EXEC_BUTTON() }">Calculate</button>
+              <button class="btn btn--color-warn ${ Component.ONCLICK() }" data-id="${ EvalComponent.CLEAR_BUTTON() }">Clear</button>
+            </div>`
   }
 
   _emptyTemplate(){

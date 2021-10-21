@@ -62,14 +62,15 @@ const trim = str => {
 const COMPOSE_FUNCTION_ID = fun => {
   return fun.name + `(${ fun.args.join(',') })`
 }
-
+//to keep white space use '@'
 const clearTags = str => {
   let read = true
   let ns = ''
   for(let i = 0,l = str.length;i < l;i++){
     if(str[i] === '<') read = false
     if(read){
-      if(str[i] !== ' ' && str[i] !== '\n') ns += str[i]
+      if(str[i] === '@') ns += ' '
+      else if(str[i] !== ' ' && str[i] !== '\n') ns += str[i]
     }
     else{
       ns += str[i]
@@ -89,6 +90,22 @@ const median = array => {
     return array[parseInt(array.length / 2)]
   }
 }
+
+const initAutocomplete = config => {
+  let array = config.inBuildFunction.map(f => { return {name:f,args:['x']}})
+  array = array.concat(config.customFunctions)
+  array = array.map(a => COMPOSE_FUNCTION_ID(a))
+  array = array.concat(config.variables.map(v => v.name))
+  array = array.concat(['print','show','use','as','object','diagram','@title','@maxValue'])
+  array = array.concat(config.operators)
+  config.autocomplete = array
+}
+
+
+
+
+
+
 
 
 

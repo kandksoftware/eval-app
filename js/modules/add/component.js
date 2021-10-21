@@ -13,8 +13,28 @@ class AddComponent extends SuperComponent{
     return 'add-constant'
   }
 
+  static SAVE_CONSTANT_BUTTON(){
+    return 'scb'
+  }
+
+  static SAVE_FUNCTION_BUTTON(){
+    return 'sFb'
+  }
+
+  static ARGS_INPUT(){
+    return 'args'
+  }
+
+  static VALUE_INPUT(){
+    return 'value'
+  }
+
+  static FUNCTION_BODY_INPUT(){
+    return 'body'
+  }
+
   render(){
-    this._viewId.innerHTML = `<div class="group" id="${ Component.VIEW_ID() }">
+    this._viewId.innerHTML = `<div class="${ Component.GROUP() }" id="${ Component.VIEW_ID() }">
                                 ${ this._addFunctionTemplate() }
                                 ${ this._addConstantTemplate() }
                               </div>`
@@ -24,14 +44,14 @@ class AddComponent extends SuperComponent{
     return `<div class="card card--entry" id="${ AddComponent.FUNCTION_TEMPLATE() }">
               <h1 class="card__title">Add function</h1>
               <label class="card__label">Name</label>
-              <input class="card__input set get" type="text" data-id="name" value="salary"/>
+              <input class="card__input ${ Component.SET() } ${ Component.GET() }" type="text" data-id="name" value="salary"/>
               <label class="card__label">Arguments</label>
-              <input class="card__input set get onkeyup" type="text" data-id="args" value="daily days"/>
+              <input class="card__input ${ Component.SET() } ${ Component.GET() } ${ Component.ONKEYUP() }" type="text" data-id="${ AddComponent.ARGS_INPUT() }" value="daily days"/>
               <label class="card__label">Function body</label>
-              <input class="card__input set get" type="text" data-id="body" value="daily * days"/>
+              <input class="card__input ${ Component.SET() } ${ Component.GET() } ${ Component.ONKEYUP() }" type="text" data-id="${ AddComponent.FUNCTION_BODY_INPUT() }" value="daily * days"/>
               <div class="card__btns card__btns--to-right">
-                <button data-id="cancel" class="btn btn--color-stand onclick">Back</button>
-                <button data-id="save-function" class="btn btn--color-stand onclick">Save</button>
+                <button data-id="${ Component.RETURN_BUTTON() }" class="btn btn--color-stand ${ Component.ONCLICK() }">Back</button>
+                <button data-id="${ AddComponent.SAVE_FUNCTION_BUTTON() }" class="btn btn--color-stand ${ Component.ONCLICK() }">Save</button>
               </div>
               <div class="card__btns card__btns--overflow-horizontal">${ this._buildButtonTemplate(this._config.customFunctions,this._functionTemplate) } 
               </div>
@@ -42,12 +62,12 @@ class AddComponent extends SuperComponent{
     return `<div class="card card--entry" id="${ AddComponent.CONSTANT_TEMPLATE() }">
               <h1 class="card__title">Add Constant</h1>
               <label class="card__label">Name</label>
-              <input class="card__input set get uppercase" type="text" data-id="name" value="PI"/>
+              <input class="card__input ${ Component.SET() } ${ Component.GET() } uppercase" type="text" data-id="name" value="PI"/>
               <label class="card__label">Value</label>
-              <input class="card__input set get onkeyup" type="text" data-id="value" value="3.14"/>
+              <input class="card__input ${ Component.SET() } ${ Component.GET() } ${ Component.ONKEYUP() }" type="text" data-id="${ AddComponent.VALUE_INPUT() }" value="3.14"/>
               <div class="card__btns card__btns--to-right">
-                <button data-id="cancel" class="btn btn--color-stand onclick">Back</button>
-                <button data-id="save-constant" class="btn btn--color-stand onclick">Save</button>
+                <button data-id="${ Component.RETURN_BUTTON() }" class="btn btn--color-stand ${ Component.ONCLICK() }">Back</button>
+                <button data-id="${ AddComponent.SAVE_CONSTANT_BUTTON() }" class="btn btn--color-stand ${ Component.ONCLICK() }">Save</button>
               </div>
               <div class="card__btns card__btns--overflow-horizontal">${ this._buildButtonTemplate(this._config.variables,this._constantTemplate) } 
               </div>
@@ -63,10 +83,10 @@ class AddComponent extends SuperComponent{
 
   _functionTemplate(o){
     return `<div class="fun">
-              <button class="onclick" data-funid="${ COMPOSE_FUNCTION_ID(o) }">
+              <button class="${ Component.ONCLICK() }" data-funid="${ COMPOSE_FUNCTION_ID(o) }">
                 ${ COMPOSE_FUNCTION_ID(o) }
               </button>
-              <button class="onclick" data-fundelid="${ COMPOSE_FUNCTION_ID(o) }">
+              <button class="${ Component.ONCLICK() }" data-fundelid="${ COMPOSE_FUNCTION_ID(o) }">
                 &#10060;
               </button>
             </div>`
@@ -74,10 +94,10 @@ class AddComponent extends SuperComponent{
 
   _constantTemplate(o){
     return `<div class="fun">
-              <button class="onclick" data-varid="${ o.name }">
+              <button class="${ Component.ONCLICK() }" data-varid="${ o.name }">
                 ${ o.name }
               </button>
-              <button class="onclick" data-vardelid="${ o.name }">
+              <button class="${ Component.ONCLICK() }" data-vardelid="${ o.name }">
                 &#10060;
               </button>
             </div>`

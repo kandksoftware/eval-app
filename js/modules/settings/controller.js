@@ -7,22 +7,22 @@ class SettingsController extends App{
     this._UIcomponent.refresh()
     this._UIcomponent.attach(Component.VIEW_ID(),o => {
       switch(o.event.name){
-        case 'onclick':
+        case Component.ONCLICK():
           if(typeof o.element.dataset.id !== 'undefined'){
             switch(o.element.dataset.id){
-              case 'delete-all-functions':
+              case SettingsComponent.DAF_BUTTON():
                 this._clearFunctions()
               break
-              case 'delete-all-constants':
+              case SettingsComponent.DAC_BUTTON():
                 this._clearConstants()
               break
-              case 'delete-history':
+              case SettingsComponent.DELETE_HISTORY_BUTTON():
                 this._clearHistory()
               break
-              case 'delete-all-settings':
+              case SettingsComponent.DELETE_ALL_SETTING_BUTTON():
                 this._clearAllSettings()
               break
-              case 'back':
+              case Component.RETURN_BUTTON():
                 new EvalController()
               break
             }

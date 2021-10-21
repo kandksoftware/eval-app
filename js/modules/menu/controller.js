@@ -8,13 +8,13 @@ class MenuController extends App{
     
     this._UIcomponent.attach(MenuComponent.VIEW_ID(),o => {
       switch(o.event.name){
-        case 'onclick':
+        case Component.ONCLICK():
           if(typeof o.element.dataset.id !== 'undefined'){
             switch(o.element.dataset.id){
-              case 'settings':
+              case MenuComponent.SETTINGS_BUTTON():
                 new SettingsController()
               break
-              case 'main':
+              case Component.RETURN_BUTTON():
                 new EvalController()
               break
             }

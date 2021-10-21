@@ -4,14 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eval | See all math & logic operation</title>
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="../dist/css/main.css">
   </head>
   <body>
     <noscript class="noscript">Your browser does not support JavaScript!</noscript>
+    <div id="splash-screen">
+      <img src="resources/spinner.gif" alt="spinner"/>
+    </div>
     <div id="app">
       <header id="header"></header>
       <main class="entry" id="entry"></main>
-      <footer class="footer"></footer>
+      <footer id="footer"></footer>
     </div>
     <div id="notification"></div>
     <div id="diagram"></div>
@@ -19,63 +22,6 @@
   <script>
     const $ = id => document.getElementById(id)
   </script>
-  <!-- libraries -->
-  <script src="js/lib/math-array.js"></script>
-  <script src="js/lib/ea.js"></script>
-  <script src="js/lib/observer.js"></script>
-  <!-- settings -->
-  <script src="js/settings/config.js"></script>
-  <!-- system -->
-  <script src="js/system/component.js"></script>
-  <script src="js/system/app.js"></script>
-  <!-- src -->
-  <script src="js/src/global-functions.js"></script>
-  <script src="js/src/caret.js"></script>
-  <script src="js/src/autocomplete.js"></script>
-  <!-- src / interpreter start -->
-  <script src="js/src/engine/marker.js"></script>
-  <script src="js/src/engine/interpreter/path.js"></script>
-  <script src="js/src/engine/interpreter/validator.js"></script>
-  <script src="js/src/engine/interpreter/limiter.js"></script>
-  <script src="js/src/engine/interpreter/variables.js"></script>
-  <script src="js/src/engine/interpreter/build-in-functions.js"></script>
-  <script src="js/src/engine/interpreter/parser.js"></script>
-  <script src="js/src/engine/interpreter/var.js"></script>
-  <script src="js/src/engine/interpreter/use.js"></script>
-  <script src="js/src/engine/interpreter/print.js"></script>
-  <script src="js/src/engine/interpreter/show.js"></script>
-  <script src="js/src/engine/interpreter/close.js"></script>
-  <script src="js/src/engine/interpreter/core.js"></script>
-  <!-- src / interpreter end -->
-  <script src="js/src/result-collector.js"></script>
-  <script src="js/src/engine/calculator.js"></script>
-  <script src="js/src/model/models.js"></script>
-  <script src="js/src/backup.js"></script>
-  <script src="js/src/io.js"></script>
-  <!-- modules -->
-  <!--- parents modules -->
-  <script src="js/modules/super/super-component.js"></script>
-  <!--- eval -->
-  <script src="js/modules/eval/component.js"></script>
-  <script src="js/modules/eval/controller.js"></script>
-  <!--- add -->
-  <script src="js/modules/add/component.js"></script>
-  <script src="js/modules/add/controller.js"></script>
-  <!--- notification -->
-  <script src="js/modules/notification/component.js"></script>
-  <script src="js/modules/notification/controller.js"></script>
-  <!--- menu -->
-  <script src="js/modules/menu/component.js"></script>
-  <script src="js/modules/menu/controller.js"></script>
-  <!--- settings -->
-  <script src="js/modules/settings/component.js"></script>
-  <script src="js/modules/settings/controller.js"></script>
-  <!--- file -->
-  <script src="js/modules/file/component.js"></script>
-  <script src="js/modules/file/controller.js"></script>
-  <!--- autocomplete -->
-  <script src="js/modules/autocomplete/component.js"></script>
-  <script src="js/modules/autocomplete/controller.js"></script>
-  <!-- main (init here) -->
-  <script src="js/main.js"></script>
+  <script src="js/system/script-loader.js"></script>
+  <script src="js/system/load.js"></script>
 </html>

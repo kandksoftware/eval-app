@@ -168,7 +168,7 @@ class Error{
   }
 
   length(){
-    return this._array.length()
+    return this._array.length
   }
 
   clear(){
@@ -383,6 +383,14 @@ class QuotesTest{
     }
     return found
   }
+}
+
+const removeMultipleComments = str => {
+  const f = str.indexOf('/*')
+  if(f === -1) return str
+  const f2 = str.indexOf('*/')
+  if(f2 === -1) return str
+  return str.slice(0,f) + removeMultipleComments(str.slice(f2 + 2))//removeMultipleComments()
 }
 
 

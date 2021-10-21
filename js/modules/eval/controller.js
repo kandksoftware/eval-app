@@ -1,54 +1,51 @@
 'use strict'
 //filter by var, print or formula
 //landing page
-//fake thread
-//diagram
 //'use example' keyword => example.var - done
-//statistics functions
 class EvalController extends App{
 	constructor(){
     super()
     this._backup = new Backup(this._cg)
     this._autocomplete = new Autocomplete(this._config)
+    
     this._UIcomponent = new EvalComponent()
     this._UIcomponent.refresh()
     this._UIcomponent.attach(Component.VIEW_ID(),o => {
       switch(o.event.name){
-        case 'onclick':
+        case Component.ONCLICK():
           new NotificationController().hide()
           switch(o.element.dataset.id){
-            case 'exec':
+            case Component.EXEC_BUTTON():
               this._exec()
             break
-            case 'mode':
+            case EvalComponent.MODE_BUTTON():
               this._switchMode()
             break
-            case 'label':
+            case EvalComponent.LABEL_BUTTON():
               this._switchLabel()
             break
-            case 'c-h':
+            case EvalComponent.CLEAR_HISTORY_BUTTON():
               this._clearHistory()
             break
-            case 'clear':
+            case EvalComponent.CLEAR_BUTTON():
               this._updateTextarea('')
             break
-            case 'config':
+            case EvalComponent.ADD_BUTTON():
               new AddController()
             break
             case EvalComponent.TEXTAREA_ID():
               this._updateCaretLocation(o)
-              //this._addCustomFactor(name = '')
             break
-            case 'eval':
+            case EvalComponent.EVAL_BUTTON():
               this._switchEval()
             break
-            case 'forward':
+            case EvalComponent.FORWARD_BUTTON():
               this._forward()
             break
-            case 'backward':
+            case EvalComponent.BACKWARD_BUTTON():
               this._backward()
             break
-            case 'file':
+            case EvalComponent.FILE_BUTTON():
               new FileController()
             break
             case 'templates':
@@ -62,7 +59,7 @@ class EvalController extends App{
             this._selectCard(o.element.dataset.selectid)
           }
         break
-        case 'onkeyup':
+        case Component.ONKEYUP():
           switch(o.element.dataset.id){
             case EvalComponent.TEXTAREA_ID():
               this._backup.add(o.element.value)//add to the backup
@@ -74,13 +71,17 @@ class EvalController extends App{
                 CARET.getInputSelection(o.element).start,
                 o.element.value
               ))
+
+              /*if(typeof this._config.autocomplete.find(a => a === 'new') === 'undefined'){
+                this._config.autocomplete.push('new')
+              }*/
             break
             case 'a-c':
               this._filterForAutocomplete(o.element.value)
             break
           }
         break
-        case 'onpaste':
+        case Component.ONPASTE():
           switch(o.element.dataset.id){
             case EvalComponent.TEXTAREA_ID():
               this._backup.add(o.element.value)//add to the backup
@@ -93,65 +94,76 @@ class EvalController extends App{
   }
 
   _filterForAutocomplete(str){
-    let array = this._config.inBuildFunction.map(f => { return {name:f,args:['x']}})
-    array = array.concat(this._config.customFunctions)
-    array = array.map(a => COMPOSE_FUNCTION_ID(a))
-    array = array.concat(this._config.variables.map(v => v.name))
-    array = array.concat(['print','show','use','object','diagram','@title','@maxValue'])
-    array = array.concat(this._config.operators)
-    array = this._autocomplete.getFiltered(array,str)
-    new AutocompleteController(array,this._backup,str)
+    //console.log(this._autocomplete.getFiltered(this._config.autocomplete,str))
+    new AutocompleteController(
+      this._autocomplete.getFiltered(this._config.autocomplete,str),
+      this._backup,
+      str
+    )
   }
-
-  _testAndUpdateEntry(o){
+  //if returns true, some error occured
+  _testProgram(str){
     const tests = [
       new PairNestedTest(['(',')']),
       new QuotesTest('\'')
     ]
-    const CLASS_NAME = 'card__tr--error'
-
+    const testString = removeOneLineComments(str)
     for(let i = 0,l = tests.length;i < l;i++){
-      if(tests[i].exec(o.element.value)){
-        o.element.classList.remove(CLASS_NAME)
-      }else{
-        o.element.classList.add(CLASS_NAME)
-        return
+      if(!tests[i].exec(testString)){
+        return true
       }
+    }
+    return false
+  }
+
+  _testAndUpdateEntry(o){
+    const CLASS_NAME = 'card__tr--error'
+    if(this._testProgram(o.element.value)){
+      o.element.classList.add(CLASS_NAME)
+    }else{
+      o.element.classList.remove(CLASS_NAME)
     }
   }
 
   _exec(){
     const ro = this._UIcomponent.getDataValueFrom(Component.VIEW_ID())
-    if(!new PairNestedTest(['(',')']).exec(ro.formula_entry)) return
-    if(!new QuotesTest('\'').exec(ro.formula_entry)) return
-    
-    const runner = new Runner()
-    runner.exec(ro.formula_entry,
-    e => {
-      new NotificationController()
-      .setText(`${ e.ln } - ${ e.mess }`)
-      .show()
-    })
+    if(this._testProgram(ro.formula_entry)) return
 
-    const e = runner.getErrorMess()
-
-    if(e.length === 0){
-      const marker = runner.getMarker()
-      if(marker.length !== 0){//if empty, don't add it
-        this._config.queue.push({
-          type:0,
-          tree:marker,
-          selected:false,
+    const runner = new Runner(ro.formula_entry)
+    runner.onDoneCallback(r => {
+      console.log('done')//hide spinner
+      const error = r.interpreter.getError()
+      const resultManager = new ResultManager(this._config.queue)
+      if(error.length() !== 0){
+        error.get().forEach(e => {
+          new NotificationController()
+          .setText(`${ e.ln } - ${ e.mess }`)
+          .show()
         })
+
+        resultManager.add({
+          type:0,
+          tree:new Marker().addError('Some error has occured!').get(),
+          selected:true,
+        })
+
+      }else{
+        const marker = r.interpreter.getMarker()
+        if(marker.length !== 0){//if empty, don't add it
+        resultManager.add({
+            type:0,
+            tree:marker,
+            selected:false,
+          })
+        }
       }
-    }else{
-      this._config.queue.push({
-        type:0,
-        tree:new Marker().addError('Some error has occured!').get(),
-        selected:true,
-      })
-    }
-    this._cg.save()
+      this._config.queue = resultManager.get()
+      this._cg.save()//save & refresh UI
+    })
+    runner.onRunningCallback(r => {
+      console.log('running')//show spinner
+    })
+    runner.run()
   }
 
   _updateTextarea(str,listen = true){
@@ -215,19 +227,20 @@ class EvalController extends App{
     .show(NotificationComponent.INFO())
   }
 
-  _forward(){
-    this._backup.forward()
+  _updateTextareaAfterCallBackup(){
     this._UIcomponent.setDataValueTo(Component.VIEW_ID(),{
       formula_entry:this._backup.getLast()
     })
     this._updateTextarea(this._backup.getLast(),false)
   }
 
+  _forward(){
+    this._backup.forward()
+    this._updateTextareaAfterCallBackup()
+  }
+
   _backward(){
     this._backup.backward()
-    this._UIcomponent.setDataValueTo(Component.VIEW_ID(),{
-      formula_entry:this._backup.getLast()
-    })
-    this._updateTextarea(this._backup.getLast(),false)
+    this._updateTextareaAfterCallBackup()
   }
 }
